@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>每月財務預算自動化規劃書</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Huninn&display=swap" rel="stylesheet">
+<style>
+:root{--paper:#FFFCF6;--ink:#3E3A39;--coral:#F2A497;--yellow:#F6D27A;--sky:#A8D3E6;--green:#B9DAA5;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-behavior:smooth;scroll-padding-top:calc(76px + env(safe-area-inset-top,0px))}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:"Huninn","Hiragino Maru Gothic ProN","PingFang TC","Microsoft JhengHei",sans-serif;line-height:1.7;font-size:16px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--paper);z-index:60}
+.box{border:3px solid var(--ink);border-radius:24px;background:var(--paper)}
+nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:var(--paper);border-bottom:3px solid var(--ink);padding:10px 12px;display:flex;gap:8px;overflow-x:auto;justify-content:flex-start}
+nav a{flex:0 0 auto;text-decoration:none;color:var(--ink);border:3px solid var(--ink);border-radius:24px;padding:4px 14px;background:var(--yellow);font-size:15px;white-space:nowrap}
+nav a:nth-child(2){background:var(--coral)}nav a:nth-child(3){background:var(--sky)}nav a:nth-child(4){background:var(--green)}
+nav a:active{transform:scale(.94)}
+main{max-width:980px;margin:0 auto;padding:16px 14px 48px}
+section{margin-top:36px}
+h1{font-size:clamp(28px,8vw,48px);margin:8px 0;line-height:1.25}
+h2{font-size:24px;margin:0 0 14px;display:inline-block;background:var(--yellow);border:3px solid var(--ink);border-radius:24px;padding:2px 18px}
+.hero{background:var(--sky);padding:22px 16px;text-align:center;position:relative;overflow:hidden}
+.hero .art{display:flex;justify-content:center;align-items:flex-end;gap:6px;flex-wrap:wrap}
+.hero svg{width:min(30%,170px);height:auto}
+.count{display:inline-block;background:var(--paper);border:3px solid var(--ink);border-radius:24px;padding:8px 20px;margin-top:10px}
+.count b{font-size:40px;color:#d9695a}
+.metrics{display:grid;gap:14px;grid-template-columns:1fr}
+.metric{padding:18px;text-align:center}
+.metric small{display:block;font-size:14px}
+.metric strong{font-size:32px;display:block}
+.m1{background:var(--green)}.m2{background:var(--coral)}.m3{background:var(--yellow)}
+.switch{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.switch button{font:inherit;color:var(--ink);border:3px solid var(--ink);border-radius:24px;padding:12px 4px;font-size:17px;cursor:pointer;background:var(--paper)}
+.switch button[aria-selected=true]{transform:translateY(3px);box-shadow:none}
+.switch button{box-shadow:0 5px 0 var(--ink)}
+.switch button[data-k=red][aria-selected=true]{background:var(--coral)}
+.switch button[data-k=yellow][aria-selected=true]{background:var(--yellow)}
+.switch button[data-k=green][aria-selected=true]{background:var(--green)}
+.panel{margin-top:18px;padding:16px}
+.panel.bounce{animation:bounce .6s cubic-bezier(.3,1.6,.5,1)}
+@keyframes bounce{0%{transform:scale(.85) translateY(24px);opacity:.3}60%{transform:scale(1.04) translateY(-6px);opacity:1}100%{transform:none}}
+.cond{font-size:18px;margin:0 0 12px}
+.tl{list-style:none;margin:0;padding:0 0 0 30px;position:relative}
+.tl::before{content:"";position:absolute;left:11px;top:6px;bottom:6px;border-left:3px dashed var(--ink)}
+.tl li{position:relative;margin-bottom:14px;padding:10px 12px;border:3px solid var(--ink);border-radius:24px}
+.tl li::before{content:attr(data-n);position:absolute;left:-30px;top:10px;width:24px;height:24px;border:3px solid var(--ink);border-radius:50%;background:var(--c,var(--yellow));font-size:12px;text-align:center;line-height:18px}
+.tl h3{margin:0;font-size:17px}
+.tl p{margin:2px 0 0;font-size:15px}
+.tag{display:inline-block;border:2px solid var(--ink);border-radius:24px;padding:0 10px;font-size:13px;margin:2px 4px 2px 0}
+.t-fix{background:var(--sky)}.t-food{background:var(--green)}.t-flex{background:var(--yellow)}.t-save{background:var(--coral)}
+.must{background:var(--ink);color:var(--paper)}.ok{background:var(--green)}.t-day{background:var(--coral)}
+.tw{overflow-x:auto;margin-top:12px}
+table{width:100%;border-collapse:separate;border-spacing:0;border:3px solid var(--ink);border-radius:24px;overflow:hidden;min-width:420px}
+th,td{padding:8px 12px;text-align:left;border-bottom:2px solid var(--ink);font-size:15px}
+th{background:var(--yellow)}tr:last-child td{border-bottom:0}
+.dash{border-style:dashed}.dash th,.dash td{border-bottom:2px dashed var(--ink)}
+.todo{list-style:none;padding:0;margin:0;display:grid;gap:10px}
+.todo label{display:flex;align-items:center;gap:12px;padding:12px 14px;border:3px solid var(--ink);border-radius:24px;cursor:pointer;background:var(--paper)}
+.todo input{position:absolute;opacity:0}
+.cb{flex:0 0 28px;height:28px;border:3px solid var(--ink);border-radius:10px 14px 10px 14px;position:relative;background:var(--paper)}
+.cb::after{content:"";position:absolute;left:6px;top:0;width:8px;height:15px;border:solid var(--ink);border-width:0 4px 4px 0;transform:rotate(45deg) scale(0);transition:transform .3s cubic-bezier(.3,1.8,.5,1)}
+input:checked+.cb{background:var(--green)}
+input:checked+.cb::after{transform:rotate(45deg) scale(1)}
+input:focus-visible+.cb{outline:3px solid var(--coral);outline-offset:2px}
+.txt{background:linear-gradient(var(--ink),var(--ink)) no-repeat 0 55%/0 3px;transition:background-size .5s ease,opacity .5s}
+input:checked~.txt{background-size:100% 3px;opacity:.55}
+.prog{height:22px;border:3px solid var(--ink);border-radius:24px;overflow:hidden;margin:6px 0 12px}
+.prog i{display:block;height:100%;width:60%;background:var(--sky);border-right:3px solid var(--ink)}
+footer{text-align:center;font-size:14px;margin-top:40px}
+.calc{padding:16px;display:grid;gap:12px;background:var(--sky)}.screen{background:var(--paper);border:3px solid var(--ink);border-radius:20px;padding:8px 14px;text-align:right;font-size:28px;min-height:52px}.keys{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.keys i{height:22px;border:3px solid var(--ink);border-radius:10px;background:var(--paper)}.calc input{font:inherit;width:100%;border:3px solid var(--ink);border-radius:24px;padding:10px 16px;background:var(--paper);color:var(--ink);font-size:18px}.calc input:focus-visible,.go:focus-visible,.switch button:focus-visible{outline:3px solid var(--coral);outline-offset:2px}.go{font:inherit;color:var(--ink);border:3px solid var(--ink);border-radius:24px;padding:10px;background:var(--yellow);box-shadow:0 5px 0 var(--ink);cursor:pointer;font-size:18px}.go:active{transform:translateY(4px);box-shadow:none}.result{margin:0;background:var(--paper);border:3px solid var(--ink);border-radius:24px;padding:10px 14px}.glow{animation:glow 1.4s ease-out}@keyframes glow{0%{box-shadow:0 0 0 0 var(--gc)}40%{box-shadow:0 0 0 14px var(--gc)}100%{box-shadow:0 0 0 0 transparent}}
+.tl li.pop{animation:bounce .6s cubic-bezier(.3,1.6,.5,1) both}.num{color:#c4584a}.vault{display:grid;gap:10px;margin-bottom:14px}.vault input{font:inherit;width:100%;border:3px solid var(--ink);border-radius:24px;padding:10px 16px;background:var(--paper);color:var(--ink);font-size:18px}.vault input:focus-visible{outline:3px solid var(--coral);outline-offset:2px}.vault .prog{margin:0}.vault .prog i{transition:width .6s cubic-bezier(.3,1.6,.5,1)}
+.float{animation:float 4s ease-in-out infinite}
+.f2{animation-delay:-1.3s}.f3{animation:breathe 3.6s ease-in-out infinite}
+@keyframes float{50%{transform:translateY(-10px)}}
+@keyframes breathe{50%{transform:scale(1.06)}}
+.wing{transform-origin:50% 100%;animation:flap 1.2s ease-in-out infinite}
+@keyframes flap{50%{transform:rotate(-12deg)}}
+@media(min-width:700px){.metrics{grid-template-columns:repeat(3,1fr)}main{padding:24px}nav{justify-content:center}.hero{padding:32px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+.fld{display:grid;gap:4px}.fld label{font-size:15px}.hint{font-size:13px;margin:0;opacity:.75}.row3{display:grid;gap:8px;grid-template-columns:repeat(3,1fr)}.inbox{margin-top:18px;background:var(--yellow)}.inbox details{border:3px dashed var(--ink);border-radius:20px;padding:8px 12px;background:var(--paper)}.inbox summary{cursor:pointer;font-size:17px}.inbox details>div{display:grid;gap:10px;margin-top:10px}.warn{margin:0;background:var(--coral);border:3px solid var(--ink);border-radius:24px;padding:8px 14px;display:none}.ghost{background:var(--paper)}
+</style>
+</head>
+<body>
+<nav aria-label="主選單"><a href="#home">🏠 首頁</a><a href="#calc">🧮 預算計算機</a><a href="#lights">🚦 情境分配表</a><a href="#todo">📒 理財待辦</a></nav>
+<main>
+<section id="home" style="margin-top:0">
+<div class="box hero">
+<div class="art" aria-hidden="true">
+<svg class="float" viewBox="0 0 120 110"><ellipse cx="60" cy="98" rx="38" ry="6" fill="#3E3A39" opacity=".12"/><ellipse cx="60" cy="62" rx="44" ry="34" fill="#F2A497" stroke="#3E3A39" stroke-width="3"/><path d="M28 36 L22 16 L44 28Z" fill="#F2A497" stroke="#3E3A39" stroke-width="3" stroke-linejoin="round"/><path d="M92 36 L98 16 L76 28Z" fill="#F2A497" stroke="#3E3A39" stroke-width="3" stroke-linejoin="round"/><rect x="48" y="30" width="24" height="5" rx="2.5" fill="#3E3A39"/><circle cx="44" cy="55" r="11" fill="#FFFCF6" stroke="#3E3A39" stroke-width="3"/><circle cx="76" cy="55" r="11" fill="#FFFCF6" stroke="#3E3A39" stroke-width="3"/><path d="M55 55h10" stroke="#3E3A39" stroke-width="3"/><circle cx="44" cy="56" r="3.5" fill="#3E3A39"/><circle cx="76" cy="56" r="3.5" fill="#3E3A39"/><ellipse cx="60" cy="74" rx="14" ry="10" fill="#F6D27A" stroke="#3E3A39" stroke-width="3"/><circle cx="55" cy="74" r="2" fill="#3E3A39"/><circle cx="65" cy="74" r="2" fill="#3E3A39"/><path d="M26 74q-6 6 0 10M94 74q6 6 0 10" stroke="#3E3A39" stroke-width="3" fill="none" stroke-linecap="round"/><rect x="40" y="88" width="10" height="12" rx="4" fill="#F2A497" stroke="#3E3A39" stroke-width="3"/><rect x="70" y="88" width="10" height="12" rx="4" fill="#F2A497" stroke="#3E3A39" stroke-width="3"/></svg>
+<svg class="float f2" viewBox="0 0 120 130"><rect x="20" y="10" width="80" height="112" rx="20" fill="#F6D27A" stroke="#3E3A39" stroke-width="3"/><rect x="32" y="22" width="56" height="26" rx="10" fill="#B9DAA5" stroke="#3E3A39" stroke-width="3"/><path d="M44 62q16 14 32 0" stroke="#3E3A39" stroke-width="3.5" fill="none" stroke-linecap="round"/><circle cx="46" cy="58" r="3.5" fill="#3E3A39"/><circle cx="74" cy="58" r="3.5" fill="#3E3A39"/><circle cx="38" cy="66" r="5" fill="#F2A497"/><circle cx="82" cy="66" r="5" fill="#F2A497"/><g fill="#FFFCF6" stroke="#3E3A39" stroke-width="3"><circle cx="40" cy="86" r="8"/><circle cx="60" cy="86" r="8"/><circle cx="80" cy="86" r="8"/><circle cx="40" cy="106" r="8"/><circle cx="60" cy="106" r="8"/><circle cx="80" cy="106" r="8" fill="#F2A497"/></g><text x="60" y="40" text-anchor="middle" font-size="16" fill="#3E3A39">$ 0</text></svg>
+<svg class="f3" viewBox="0 0 140 120"><path d="M92 100q42-4 32-48-4-20-22-16 18 10 8 34-6 14-20 16z" fill="#F6D27A" stroke="#3E3A39" stroke-width="3" stroke-linejoin="round"/><ellipse cx="64" cy="84" rx="30" ry="28" fill="#F2A497" stroke="#3E3A39" stroke-width="3"/><path d="M42 26L40 8l18 12zM82 26l2-18-18 12z" fill="#F2A497" stroke="#3E3A39" stroke-width="3" stroke-linejoin="round"/><circle cx="62" cy="42" r="22" fill="#F2A497" stroke="#3E3A39" stroke-width="3"/><circle cx="53" cy="40" r="3" fill="#3E3A39"/><circle cx="71" cy="40" r="3" fill="#3E3A39"/><circle cx="62" cy="47" r="3" fill="#3E3A39"/><path d="M55 52q7 6 14 0" stroke="#3E3A39" stroke-width="3" fill="none" stroke-linecap="round"/><rect x="38" y="68" width="48" height="36" rx="6" fill="#A8D3E6" stroke="#3E3A39" stroke-width="3"/><path d="M62 68v36" stroke="#3E3A39" stroke-width="3"/><text x="50" y="90" text-anchor="middle" font-size="9" fill="#3E3A39">記帳</text><text x="74" y="90" text-anchor="middle" font-size="9" fill="#3E3A39">本</text></svg>
+</div>
+<h1>每月財務預算自動化規劃書</h1>
+<p>收入忽高忽低也不怕，跟著燈號慢慢存 🌱</p>
+<div class="count">距離年度目標資產結算還有<br><b id="days">--</b> 天</div>
+</div>
+
+<div class="box calc inbox" id="inputs">
+<h2 style="margin:0;justify-self:start;background:var(--paper)">💰 填入你的財務目標</h2>
+<div class="fld"><label for="goal">年度目標存款</label><input id="goal" type="number" inputmode="numeric" min="0" placeholder="🤑"></div>
+<div class="fld"><label for="inc">年收入</label><input id="inc" type="number" inputmode="numeric" min="0" placeholder="🤑"></div>
+<div class="fld"><label for="need">年度必須花費</label><input id="need" type="number" inputmode="numeric" min="0" placeholder="🤑"></div>
+<details><summary>⚙️ 進階設定（選填）</summary><div>
+<div class="fld"><label for="cons">保守年收入</label><input id="cons" type="number" inputmode="numeric" min="0" placeholder="🤑"><p class="hint">未填則自動使用：年收入 × 65%</p></div>
+<div class="fld"><label for="daily">每月日常花費底線</label><input id="daily" type="number" inputmode="numeric" min="0" placeholder="🤑"><p class="hint">未填則自動使用：6,000</p></div>
+<div class="fld"><label for="fixed">年度固定支出</label><input id="fixed" type="number" inputmode="numeric" min="0" placeholder="🤑"><p class="hint">房租、手機、固定交通等每月必付項目，未填則自動使用：年度必須花費</p></div>
+<div class="fld"><label>超額盈餘分配（%）</label><div class="row3"><input id="pf" type="number" inputmode="numeric" min="0" placeholder="🤑" aria-label="平準基金"><input id="px" type="number" inputmode="numeric" min="0" placeholder="🤑" aria-label="彈性花費"><input id="ps" type="number" inputmode="numeric" min="0" placeholder="🤑" aria-label="存款"></div><p class="hint">依序：平準基金／彈性花費／存款，需加總 100。未填則自動使用：50／10／40</p></div>
+</div></details>
+<p class="warn" id="warn" aria-live="polite"></p>
+<button class="go ghost" id="clear" type="button">清空全部 🧹</button>
+</div>
+<div class="metrics" style="margin-top:18px">
+<div class="box metric m1"><small>🌾 年度收入基準</small><strong id="m1">🤑</strong><small id="m1s">保守基準 🤑</small></div>
+<div class="box metric m2"><small>🐷 年度儲蓄目標</small><strong id="m2">🤑</strong><small id="m2s">每月約 🤑</small></div>
+<div class="box metric m3"><small>🏡 年度生活必須花費</small><strong id="m3">🤑</strong><small id="m3s">每月 🤑（固定支出）</small></div>
+</div>
+</section>
+
+<section id="calc">
+<h2>🧮 全自動財務推算計算機</h2>
+<div class="box calc">
+<div class="screen" id="screen" aria-live="polite">上月收入 🤑</div>
+<div class="keys" aria-hidden="true"><i style="background:var(--coral)"></i><i style="background:var(--yellow)"></i><i style="background:var(--green)"></i><i></i></div>
+<label for="last">請輸入您上個月的收入</label>
+<input id="last" type="number" inputmode="numeric" min="0" placeholder="🤑">
+<button class="go" id="go" type="button">開始全自動推算 ✨</button>
+<p id="result" class="result" aria-live="polite">先填好上方三個欄位，再輸入上個月收入，系統會自動判定燈號並更新所有金額。</p>
+</div>
+</section>
+
+<section id="lights">
+<h2>🚦 情境分配表</h2>
+<p>上方計算機會自動切換燈號，也可以手動點選看範例：</p>
+<div class="switch" role="tablist" aria-label="燈號切換">
+<button role="tab" data-k="red" aria-selected="true">🔴 紅燈</button>
+<button role="tab" data-k="yellow" aria-selected="false">🟡 黃燈</button>
+<button role="tab" data-k="green" aria-selected="false">🟢 綠燈</button>
+</div>
+<div id="panel" class="box panel" role="tabpanel" aria-live="polite"></div>
+</section>
+
+<section id="todo">
+<h2>📒 理財待辦</h2>
+<ul class="todo" id="todoList"></ul>
+</section>
+
+<section id="fund">
+<h2>🛡️ 防禦性資產說明</h2>
+<div class="box" style="padding:16px">
+<p style="margin-top:0" id="fundtxt"></p>
+<h3 style="margin:0 0 8px">🐷 我的平準基金小金庫</h3><div class="vault"><div class="screen" id="vamt">🤑</div><label for="vin">目前平準基金累計剩餘總額</label><input id="vin" type="number" inputmode="numeric" min="0" placeholder="🤑"><button class="go" id="vsave" type="button">記錄金額 🐷</button><div class="prog" role="img" aria-label="基金水位"><i id="vbar" style="width:0%"></i></div><p class="result" id="vstat" aria-live="polite">尚未記錄金額，輸入後會自動判斷水位。</p></div>
+<div class="tw"><table class="dash">
+<thead><tr><th>水位</th><th>狀態</th><th>防禦規則</th></tr></thead>
+<tbody id="fbody"></tbody></table></div>
+<p style="margin-bottom:0" id="safe"></p>
+</div>
+</section>
+<footer>用心照顧每一塊錢，慢慢來，比較快 ✿</footer>
+</main>
+<script>
+const EMPTY='🤑',DEF_DAILY=6000,DEF_CONS=.65,DEF_SPLIT=[.5,.1,.4];
+const $=id=>document.getElementById(id);
+const IDS=['goal','inc','need','cons','daily','fixed','pf','px','ps'],KEEP=IDS.concat('last');
+const cols={red:'var(--coral)',yellow:'var(--yellow)',green:'var(--green)'};
+const N=n=>Math.round(n).toLocaleString('en-US'),F=v=>v==null?EMPTY:N(v);
+const TG=(c,t)=>`<span class="tag ${c}">${t}</span>`;
+let cur=null,S={ok:false},sel='red';
+function num(id){const s=$(id).value.trim();if(s==='')return null;const v=parseFloat(s);return isFinite(v)?v:NaN}
+function compute(){const v={},w=[];let neg=false;
+IDS.forEach(i=>{v[i]=num(i);if(v[i]!=null&&(isNaN(v[i])||v[i]<0)){neg=true;v[i]=null}});
+if(neg)w.push('金額不可以是負數喔 🐿️');
+let sp=[v.pf,v.px,v.ps].map((x,i)=>x==null?DEF_SPLIT[i]:x/100);
+if(Math.abs(sp[0]+sp[1]+sp[2]-1)>.001){if(v.pf!=null||v.px!=null||v.ps!=null)w.push('分配比例加總需要是 100，先用預設 50／10／40 試算 🐷');sp=DEF_SPLIT}
+if(v.goal==null||v.inc==null||v.need==null)return{ok:false,w};
+const fixedY=v.fixed==null?v.need:v.fixed,consY=v.cons==null?v.inc*DEF_CONS:v.cons;
+if(v.inc<v.need)w.push('年收入比年度必須花費還少，目標有點吃緊，要不要調整一下？');
+else if(v.goal>v.inc-v.need)w.push('目標存款比收入扣掉必須花費後還多，目標有點吃緊，要不要調整一下？');
+if(fixedY>v.need)w.push('年度固定支出大於年度必須花費，要不要確認一下？');
+const fixed=fixedY/12,daily=v.daily==null?DEF_DAILY:v.daily,goalM=v.goal/12;
+const base=Math.min(goalM,Math.max(0,consY/12-fixed-daily)),t1=fixed+daily;
+return{ok:true,w,goalY:v.goal,incY:v.inc,needY:v.need,consY,fixed,daily,goalM,base,t1,t2:t1+base,pf:sp[0],px:sp[1],ps:sp[2]}}
+const lightOf=m=>m<S.t1?'red':m<=S.t2?'yellow':'green';
+function renderPanel(k){const nm={red:'🔴 紅燈',yellow:'🟡 黃燈',green:'🟢 綠燈'}[k],c=cols[k];
+let day=EMPTY,flex=EMPTY,sav=EMPTY,fund=EMPTY,fix=EMPTY,note='先在上方填入三個必填欄位 🤑',cond=nm+'｜等你填入資料';
+if(S.ok){const real=cur!=null&&lightOf(cur)===k,m=real?cur:{red:S.t1*.85,yellow:S.t1+S.base/2,green:S.t2*1.25}[k];
+cond=nm+'｜'+(real?'依你上個月收入 $'+N(m)+' 試算':'範例：上個月收入 $'+N(m));fix=N(S.fixed);day='至少 '+N(S.daily)+' 元';
+if(k==='red'){const l=Math.max(0,m-S.fixed);if(real)day+=`（實際可用 ${N(l)}，不足約 ${N(Math.max(0,S.daily-l))} 由平準基金補，死守最低 ${N(S.daily)}）`;flex='0';sav='0';fund='由基金池補貼';note='本月收入吃緊，無需提撥平準基金，改由基金池提取補貼。'}
+else if(k==='yellow'){flex='0';sav=N(Math.min(S.base,Math.max(0,m-S.t1)));fund='暫不提撥';note='本月財務收支平衡，維持現狀，暫不提撥平準基金。'}
+else{const x=Math.max(0,m-S.t2),p=a=>Math.round(a*100);flex=`${N(x*S.px)}（超額盈餘 × ${p(S.px)}%）解鎖！`;sav=`${N(S.base)} + ${N(x*S.ps)}（超額盈餘 × ${p(S.ps)}%）= ${N(S.base+x*S.ps)}`;fund=N(x*S.pf)+' 元';note=`財務豐收！建議從盈餘中提撥 ${N(x*S.pf)} 元至備用平準基金池（超額盈餘分配：${p(S.pf)}% 平準基金、${p(S.px)}% 彈性花費、${p(S.ps)}% 存款）`}}
+const L=[['固定支出：',fix,'房租、手機、固定交通',TG('t-fix','固定')+TG('ok','✅ 照付')+TG('must','必付')],['日常花費：',day,'餐飲、日用品、變動交通',TG('t-day','日常')],['彈性花費：',flex,'社交、服飾',TG('t-flex','彈性')],['存款：',sav,'放進儲蓄帳戶',TG('t-save','存款')],['平準基金：',fund,note,TG('t-fix','平準基金')]];
+const R=[['固定支出',fix],['日常花費',day],['彈性花費',flex],['存款',sav],['平準基金提示',note]];
+$('panel').innerHTML=`<p class="cond">${cond}</p><ol class="tl">${L.map((s,i)=>`<li class="pop" data-n="${i+1}" style="--c:${c};animation-delay:${i*90}ms"><h3>${s[0]}<span class="num">${s[1]}</span></h3><p>${s[2]}</p><div>${s[3]}</div></li>`).join('')}</ol><div class="tw"><table><thead><tr><th>項目</th><th>金額</th></tr></thead><tbody>${R.map(r=>`<tr><td>${r[0]}</td><td class="num">${r[1]}</td></tr>`).join('')}</tbody></table></div>`}
+function show(k,g){sel=k;renderPanel(k);const p=$('panel');p.classList.remove('bounce');void p.offsetWidth;p.classList.add('bounce');
+document.querySelectorAll('.switch button').forEach(b=>b.setAttribute('aria-selected',b.dataset.k===k));
+if(g){p.style.setProperty('--gc',cols[k]);p.classList.remove('glow');void p.offsetWidth;p.classList.add('glow')}}
+function diagnose(){const res=$('result'),y=num('last');
+if(!S.ok){res.textContent='請先填好上方三個必填欄位喔 🤑';return}
+if(y==null||isNaN(y)||y<0){res.textContent='請先輸入上個月收入金額喔 🐿️';return}
+cur=y;const k=lightOf(y);$('screen').textContent='上月收入 $ '+N(y);
+res.textContent=`上個月收入 ${N(y)} → ${{red:'🔴 紅燈',yellow:'🟡 黃燈',green:'🟢 綠燈'}[k]}，下方金額已自動更新！`;
+show(k,true);savein();$('lights').scrollIntoView()}
+function savein(){try{const o={};KEEP.forEach(i=>o[i]=$(i).value);localStorage.setItem('fin_in',JSON.stringify(o))}catch(e){}}
+function vget(){try{return localStorage.getItem('fund_total')}catch(e){return null}}
+function vset(v){try{localStorage.setItem('fund_total',String(v))}catch(e){}}
+function vrender(){const s=vget(),v=s===null||s===''||isNaN(s)?null:+s;$('vamt').textContent=v==null?EMPTY:'$ '+N(v);
+if(!S.ok){$('vbar').style.width='0%';$('vstat').textContent='先填入上方三個必填欄位，才能判斷水位 🤑';return}
+if(v==null){$('vbar').style.width='0%';$('vstat').textContent='尚未記錄金額，輸入後會自動判斷水位。';return}
+const a=S.t1,b=S.t1*3;$('vbar').style.width=Math.min(100,b?v/b*100:0)+'%';
+$('vstat').textContent=v<a?`🔴 警戒：低於 1 個月保底（${N(a)}），綠燈月優先補水位。`:v<b?'🟡 注意：1～3 個月之間，維持提撥，紅燈月才動用。':`🟢 安心：已超過 3 個月保底（${N(b)}），多出的可轉入年度儲蓄。`}
+function refresh(){S=compute();const w=S.w||[],wb=$('warn');wb.style.display=w.length?'block':'none';wb.textContent=w.join('　');
+const ok=S.ok,$$=(i,t)=>$(i).textContent=t;
+$$('m1',ok?'$'+N(S.incY):EMPTY);$$('m1s','保守基準 '+(ok?N(S.consY):EMPTY));
+$$('m2',ok?'$'+N(S.goalY):EMPTY);$$('m2s','每月約 '+(ok?N(S.goalM):EMPTY));
+$$('m3',ok?'$'+N(S.needY):EMPTY);$$('m3s','每月 '+(ok?N(S.fixed):EMPTY)+'（固定支出）');
+const pf=ok?Math.round(S.pf*100):'○○';
+$$('fundtxt',`備用平準基金專門補「紅燈月」的洞。提撥規則：綠燈月的超額盈餘（上個月收入 − 固定支出 − 日常底線 − 基本存款），提撥 ${pf}%。`);
+$('fbody').innerHTML=[[`低於 1 個月（${ok?N(S.t1):EMPTY}）`,'🔴 警戒',`綠燈月提撥超額盈餘的 ${pf}%，水位偏低時優先補足`],['1～3 個月','🟡 注意','維持提撥，紅燈月才動用'],[`高於 3 個月（${ok?N(S.t1*3):EMPTY}）`,'🟢 安心','多出的部分轉入年度儲蓄'],[`每月固定支出 ${ok?N(S.fixed):EMPTY}`,'📘 必付','每月先扣，固定開銷要照付']].map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td></tr>`).join('');
+$$('safe',`🛡️ 安全守則：只在紅燈月動用；動用順序：先補日常（最低守 ${ok?N(S.daily):EMPTY}）→ 再停儲蓄 → 最後才動固定支出的彈性項目，之後要補回。`);
+if(cur!=null&&!ok)cur=null;if(!ok||cur==null)$$('screen','上月收入 '+EMPTY);
+show(sel);vrender();savein()}
+IDS.concat('last').forEach(i=>$(i).addEventListener('input',()=>{if(i==='last')savein();else refresh()}));
+document.querySelectorAll('.switch button').forEach(b=>b.addEventListener('click',()=>show(b.dataset.k)));
+$('go').addEventListener('click',diagnose);$('last').addEventListener('keydown',e=>{if(e.key==='Enter')diagnose()});
+$('vsave').addEventListener('click',()=>{const v=parseFloat($('vin').value);if(!(v>=0)){$('vstat').textContent='請先輸入金額喔 🐷';return}vset(v);vrender()});
+$('clear').addEventListener('click',()=>{KEEP.concat('vin').forEach(i=>$(i).value='');cur=null;try{localStorage.removeItem('fin_in');localStorage.removeItem('fund_total')}catch(e){}$('result').textContent='先填好上方三個欄位，再輸入上個月收入，系統會自動判定燈號並更新所有金額。';refresh()});
+try{const o=JSON.parse(localStorage.getItem('fin_in')||'null');if(o)KEEP.forEach(i=>{if(o[i]!=null)$(i).value=o[i]});const f=vget();if(f)$('vin').value=f}catch(e){}
+const items=['發薪日先扣除固定支出','檢視上個月收入所對應的燈號','自動轉帳儲蓄目標','檢查平準基金水位','將金額分配至不同帳戶'];
+$('todoList').innerHTML=items.map((t,i)=>`<li><label><input type="checkbox" id="c${i}"><span class="cb"></span><span class="txt">${t}</span></label></li>`).join('');
+const now=new Date(),end=new Date(now.getFullYear(),11,31,23,59,59);
+$('days').textContent=Math.max(0,Math.ceil((end-now)/864e5));
+refresh();
+</script>
+</body>
+</html>

@@ -79,7 +79,7 @@ footer{text-align:center;font-size:14px;margin-top:40px}
 @keyframes flap{50%{transform:rotate(-12deg)}}
 @media(min-width:700px){.metrics{grid-template-columns:repeat(3,1fr)}main{padding:24px}nav{justify-content:center}.hero{padding:32px}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
-.fld{display:grid;gap:4px}.fld label{font-size:15px}.hint{font-size:13px;margin:0;opacity:.75}.row3{display:grid;gap:8px;grid-template-columns:repeat(3,1fr)}.inbox{margin-top:18px;background:var(--yellow)}.inbox details{border:3px dashed var(--ink);border-radius:20px;padding:8px 12px;background:var(--paper)}.inbox summary{cursor:pointer;font-size:17px}.inbox details>div{display:grid;gap:10px;margin-top:10px}.warn{margin:0;background:var(--coral);border:3px solid var(--ink);border-radius:24px;padding:8px 14px;display:none}.ghost{background:var(--paper)}
+.fld{display:grid;gap:4px}.fld label{font-size:15px}.hint{font-size:13px;margin:0;opacity:.75}.row3{display:grid;gap:8px;grid-template-columns:repeat(3,1fr)}.inbox{margin-top:18px;background:var(--yellow)}.inbox details{border:3px dashed var(--ink);border-radius:20px;padding:8px 12px;background:var(--paper)}.inbox summary{cursor:pointer;font-size:17px}.inbox details>div{display:grid;gap:10px;margin-top:10px}.warn{margin:0;background:var(--coral);border:3px solid var(--ink);border-radius:24px;padding:8px 14px;display:none}.ghost{background:var(--paper)}.ph{opacity:.3}input::placeholder{color:var(--ink);opacity:.3}.mons{display:grid;grid-template-columns:repeat(6,1fr);gap:6px}.mons button{font:inherit;border:3px solid var(--ink);border-radius:14px;background:var(--paper);padding:8px 0;cursor:pointer;position:relative;color:var(--ink)}.mons button[aria-pressed=true]{background:var(--yellow)}.mons button.has::after{content:"";position:absolute;top:3px;right:4px;width:10px;height:10px;border-radius:50%;background:var(--c,var(--paper));border:2px solid var(--ink)}
 </style>
 </head>
 <body>
@@ -99,32 +99,32 @@ footer{text-align:center;font-size:14px;margin-top:40px}
 
 <div class="box calc inbox" id="inputs">
 <h2 style="margin:0;justify-self:start;background:var(--paper)">💰 填入你的財務目標</h2>
-<div class="fld"><label for="goal">年度目標存款</label><input id="goal" type="number" inputmode="numeric" min="0" placeholder="🤑"></div>
-<div class="fld"><label for="inc">年收入</label><input id="inc" type="number" inputmode="numeric" min="0" placeholder="🤑"></div>
-<div class="fld"><label for="need">年度必須花費</label><input id="need" type="number" inputmode="numeric" min="0" placeholder="🤑"></div>
+<div class="fld"><label for="goal">年度目標存款</label><input id="goal" type="number" inputmode="numeric" min="0" placeholder="年度目標存款"></div>
+<div class="fld"><label for="inc">年收入</label><input id="inc" type="number" inputmode="numeric" min="0" placeholder="年收入"></div>
+<div class="fld"><label for="need">年度必須花費</label><input id="need" type="number" inputmode="numeric" min="0" placeholder="年度必須花費"></div>
 <details><summary>⚙️ 進階設定（選填）</summary><div>
-<div class="fld"><label for="cons">保守年收入</label><input id="cons" type="number" inputmode="numeric" min="0" placeholder="🤑"><p class="hint">未填則自動使用：年收入 × 65%</p></div>
-<div class="fld"><label for="daily">每月日常花費底線</label><input id="daily" type="number" inputmode="numeric" min="0" placeholder="🤑"><p class="hint">未填則自動使用：6,000</p></div>
-<div class="fld"><label for="fixed">年度固定支出</label><input id="fixed" type="number" inputmode="numeric" min="0" placeholder="🤑"><p class="hint">房租、手機、固定交通等每月必付項目，未填則自動使用：年度必須花費</p></div>
-<div class="fld"><label>超額盈餘分配（%）</label><div class="row3"><input id="pf" type="number" inputmode="numeric" min="0" placeholder="🤑" aria-label="平準基金"><input id="px" type="number" inputmode="numeric" min="0" placeholder="🤑" aria-label="彈性花費"><input id="ps" type="number" inputmode="numeric" min="0" placeholder="🤑" aria-label="存款"></div><p class="hint">依序：平準基金／彈性花費／存款，需加總 100。未填則自動使用：50／10／40</p></div>
+<div class="fld"><label for="cons">保守年收入</label><input id="cons" type="number" inputmode="numeric" min="0" placeholder="保守年收入"><p class="hint">未填則自動使用：年收入 × 65%</p></div>
+<div class="fld"><label for="daily">每月日常花費底線</label><input id="daily" type="number" inputmode="numeric" min="0" placeholder="每月日常花費底線"><p class="hint">未填則自動使用：6,000</p></div>
+<div class="fld"><label for="fixed">每年必須花費</label><input id="fixed" type="number" inputmode="numeric" min="0" placeholder="每年必須花費"><p class="hint">與上方「年度必須花費」同步，填一邊另一邊會跟著變；用來計算每月固定支出</p></div>
+<div class="fld"><label>超額盈餘分配（%）</label><div class="row3"><input id="pf" type="number" inputmode="numeric" min="0" placeholder="平準基金" aria-label="平準基金"><input id="px" type="number" inputmode="numeric" min="0" placeholder="彈性花費" aria-label="彈性花費"><input id="ps" type="number" inputmode="numeric" min="0" placeholder="存款" aria-label="存款"></div><p class="hint">依序：平準基金／彈性花費／存款，需加總 100。未填則自動使用：50／10／40</p></div>
 </div></details>
 <p class="warn" id="warn" aria-live="polite"></p>
 <button class="go ghost" id="clear" type="button">清空全部 🧹</button>
 </div>
 <div class="metrics" style="margin-top:18px">
-<div class="box metric m1"><small>🌾 年度收入基準</small><strong id="m1">🤑</strong><small id="m1s">保守基準 🤑</small></div>
-<div class="box metric m2"><small>🐷 年度儲蓄目標</small><strong id="m2">🤑</strong><small id="m2s">每月約 🤑</small></div>
-<div class="box metric m3"><small>🏡 年度生活必須花費</small><strong id="m3">🤑</strong><small id="m3s">每月 🤑（固定支出）</small></div>
+<div class="box metric m1"><small>🌾 年度收入基準</small><strong id="m1"></strong><small id="m1s"></small></div>
+<div class="box metric m2"><small>🐷 年度儲蓄目標</small><strong id="m2"></strong><small id="m2s"></small></div>
+<div class="box metric m3"><small>🏡 年度生活必須花費</small><strong id="m3"></strong><small id="m3s"></small></div>
 </div>
 </section>
 
 <section id="calc">
 <h2>🧮 全自動財務推算計算機</h2>
 <div class="box calc">
-<div class="screen" id="screen" aria-live="polite">上月收入 🤑</div>
+<div class="screen" id="screen" aria-live="polite"></div>
 <div class="keys" aria-hidden="true"><i style="background:var(--coral)"></i><i style="background:var(--yellow)"></i><i style="background:var(--green)"></i><i></i></div>
-<label for="last">請輸入您上個月的收入</label>
-<input id="last" type="number" inputmode="numeric" min="0" placeholder="🤑">
+<p class="hint" style="margin:0">點選月份，查看或記錄該月分配用的收入（輸入的是上個月的收入；圓點顏色＝當月燈號，🔴紅／🟡黃／🟢綠）</p><div class="mons" id="mons" role="group" aria-label="月份"></div><label for="last" id="lastlbl">請輸入您上個月的收入</label>
+<input id="last" type="number" inputmode="numeric" min="0" placeholder="上個月收入">
 <button class="go" id="go" type="button">開始全自動推算 ✨</button>
 <p id="result" class="result" aria-live="polite">先填好上方三個欄位，再輸入上個月收入，系統會自動判定燈號並更新所有金額。</p>
 </div>
@@ -150,7 +150,7 @@ footer{text-align:center;font-size:14px;margin-top:40px}
 <h2>🛡️ 防禦性資產說明</h2>
 <div class="box" style="padding:16px">
 <p style="margin-top:0" id="fundtxt"></p>
-<h3 style="margin:0 0 8px">🐷 我的平準基金小金庫</h3><div class="vault"><div class="screen" id="vamt">🤑</div><label for="vin">目前平準基金累計剩餘總額</label><input id="vin" type="number" inputmode="numeric" min="0" placeholder="🤑"><button class="go" id="vsave" type="button">記錄金額 🐷</button><div class="prog" role="img" aria-label="基金水位"><i id="vbar" style="width:0%"></i></div><p class="result" id="vstat" aria-live="polite">尚未記錄金額，輸入後會自動判斷水位。</p></div>
+<h3 style="margin:0 0 8px">🐷 我的平準基金小金庫</h3><div class="vault"><div class="screen" id="vamt"></div><label for="vin">目前平準基金累計剩餘總額</label><input id="vin" type="number" inputmode="numeric" min="0" placeholder="平準基金累計總額"><button class="go" id="vsave" type="button">記錄金額 🐷</button><div class="prog" role="img" aria-label="基金水位"><i id="vbar" style="width:0%"></i></div><p class="result" id="vstat" aria-live="polite">尚未記錄金額，輸入後會自動判斷水位。</p></div>
 <div class="tw"><table class="dash">
 <thead><tr><th>水位</th><th>狀態</th><th>防禦規則</th></tr></thead>
 <tbody id="fbody"></tbody></table></div>
@@ -160,13 +160,16 @@ footer{text-align:center;font-size:14px;margin-top:40px}
 <footer>用心照顧每一塊錢，慢慢來，比較快 ✿</footer>
 </main>
 <script>
-const EMPTY='🤑',DEF_DAILY=6000,DEF_CONS=.65,DEF_SPLIT=[.5,.1,.4];
+const PH=t=>`<span class="ph">${t}</span>`,EMPTY=PH('金額'),DEF_DAILY=6000,DEF_CONS=.65,DEF_SPLIT=[.5,.1,.4];
 const $=id=>document.getElementById(id);
-const IDS=['goal','inc','need','cons','daily','fixed','pf','px','ps'],KEEP=IDS.concat('last');
+const IDS=['goal','inc','need','cons','daily','fixed','pf','px','ps'],KEEP=IDS;
 const cols={red:'var(--coral)',yellow:'var(--yellow)',green:'var(--green)'};
 const N=n=>Math.round(n).toLocaleString('en-US'),F=v=>v==null?EMPTY:N(v);
 const TG=(c,t)=>`<span class="tag ${c}">${t}</span>`;
 let cur=null,S={ok:false},sel='red';
+const _n=new Date(),MON={},MK='fin_mon_'+_n.getFullYear();let sm=_n.getMonth()+1,PM=()=>sm===1?12:sm-1;
+try{Object.assign(MON,JSON.parse(localStorage.getItem(MK)||'{}'))}catch(e){}
+function savemon(){try{localStorage.setItem(MK,JSON.stringify(MON))}catch(e){}}
 function num(id){const s=$(id).value.trim();if(s==='')return null;const v=parseFloat(s);return isFinite(v)?v:NaN}
 function compute(){const v={},w=[];let neg=false;
 IDS.forEach(i=>{v[i]=num(i);if(v[i]!=null&&(isNaN(v[i])||v[i]<0)){neg=true;v[i]=null}});
@@ -183,7 +186,7 @@ const base=Math.min(goalM,Math.max(0,consY/12-fixed-daily)),t1=fixed+daily;
 return{ok:true,w,goalY:v.goal,incY:v.inc,needY:v.need,consY,fixed,daily,goalM,base,t1,t2:t1+base,pf:sp[0],px:sp[1],ps:sp[2]}}
 const lightOf=m=>m<S.t1?'red':m<=S.t2?'yellow':'green';
 function renderPanel(k){const nm={red:'🔴 紅燈',yellow:'🟡 黃燈',green:'🟢 綠燈'}[k],c=cols[k];
-let day=EMPTY,flex=EMPTY,sav=EMPTY,fund=EMPTY,fix=EMPTY,note='先在上方填入三個必填欄位 🤑',cond=nm+'｜等你填入資料';
+let day=EMPTY,flex=EMPTY,sav=EMPTY,fund=EMPTY,fix=EMPTY,note='先在上方填入三個必填欄位',cond=nm+'｜等你填入資料';
 if(S.ok){const real=cur!=null&&lightOf(cur)===k,m=real?cur:{red:S.t1*.85,yellow:S.t1+S.base/2,green:S.t2*1.25}[k];
 cond=nm+'｜'+(real?'依你上個月收入 $'+N(m)+' 試算':'範例：上個月收入 $'+N(m));fix=N(S.fixed);day='至少 '+N(S.daily)+' 元';
 if(k==='red'){const l=Math.max(0,m-S.fixed);if(real)day+=`（實際可用 ${N(l)}，不足約 ${N(Math.max(0,S.daily-l))} 由平準基金補，死守最低 ${N(S.daily)}）`;flex='0';sav='0';fund='由基金池補貼';note='本月收入吃緊，無需提撥平準基金，改由基金池提取補貼。'}
@@ -195,42 +198,49 @@ $('panel').innerHTML=`<p class="cond">${cond}</p><ol class="tl">${L.map((s,i)=>`
 function show(k,g){sel=k;renderPanel(k);const p=$('panel');p.classList.remove('bounce');void p.offsetWidth;p.classList.add('bounce');
 document.querySelectorAll('.switch button').forEach(b=>b.setAttribute('aria-selected',b.dataset.k===k));
 if(g){p.style.setProperty('--gc',cols[k]);p.classList.remove('glow');void p.offsetWidth;p.classList.add('glow')}}
+function drawMons(){$('mons').innerHTML=Array.from({length:12},(_,i)=>`<button type="button" data-m="${i+1}" aria-pressed="${i+1===sm}" class="${MON[i+1]!=null?'has':''}" style="--c:${MON[i+1]!=null&&S.ok?cols[lightOf(MON[i+1])]:'var(--paper)'}">${i+1}月</button>`).join('');$('lastlbl').textContent='請輸入 '+PM()+' 月的收入（作為 '+sm+' 月的分配依據）'}
+function pickMon(m){sm=m;const v=MON[m],res=$('result');$('last').value=v==null?'':v;drawMons();
+if(!S.ok){res.textContent='請先填好上方三個必填欄位喔';refresh();return}
+if(v==null){res.textContent=m+' 月還沒有記錄，輸入 '+PM()+' 月收入後按下推算就會儲存。';refresh();return}
+const k=lightOf(v);res.textContent=`${m} 月分配（依 ${PM()} 月收入 ${N(v)}）→ ${{red:'🔴 紅燈',yellow:'🟡 黃燈',green:'🟢 綠燈'}[k]}`;sel=k;refresh()}
 function diagnose(){const res=$('result'),y=num('last');
-if(!S.ok){res.textContent='請先填好上方三個必填欄位喔 🤑';return}
-if(y==null||isNaN(y)||y<0){res.textContent='請先輸入上個月收入金額喔 🐿️';return}
-cur=y;const k=lightOf(y);$('screen').textContent='上月收入 $ '+N(y);
-res.textContent=`上個月收入 ${N(y)} → ${{red:'🔴 紅燈',yellow:'🟡 黃燈',green:'🟢 綠燈'}[k]}，下方金額已自動更新！`;
-show(k,true);savein();$('lights').scrollIntoView()}
+if(!S.ok){res.textContent='請先填好上方三個必填欄位喔';return}
+if(y==null||isNaN(y)||y<0){res.textContent='請先輸入該月收入金額喔 🐿️';return}
+cur=y;MON[sm]=y;savemon();const k=lightOf(y);$('screen').textContent=PM()+' 月收入 $ '+N(y);drawMons();
+res.textContent=`${sm} 月分配（依 ${PM()} 月收入 ${N(y)}）→ ${{red:'🔴 紅燈',yellow:'🟡 黃燈',green:'🟢 綠燈'}[k]}，下方金額已自動更新！`;
+show(k,true);$('lights').scrollIntoView()}
 function savein(){try{const o={};KEEP.forEach(i=>o[i]=$(i).value);localStorage.setItem('fin_in',JSON.stringify(o))}catch(e){}}
 function vget(){try{return localStorage.getItem('fund_total')}catch(e){return null}}
 function vset(v){try{localStorage.setItem('fund_total',String(v))}catch(e){}}
-function vrender(){const s=vget(),v=s===null||s===''||isNaN(s)?null:+s;$('vamt').textContent=v==null?EMPTY:'$ '+N(v);
-if(!S.ok){$('vbar').style.width='0%';$('vstat').textContent='先填入上方三個必填欄位，才能判斷水位 🤑';return}
+function vrender(){const s=vget(),v=s===null||s===''||isNaN(s)?null:+s;$('vamt').innerHTML=v==null?EMPTY:'$ '+N(v);
+if(!S.ok){$('vbar').style.width='0%';$('vstat').textContent='先填入上方三個必填欄位，才能判斷水位';return}
 if(v==null){$('vbar').style.width='0%';$('vstat').textContent='尚未記錄金額，輸入後會自動判斷水位。';return}
 const a=S.t1,b=S.t1*3;$('vbar').style.width=Math.min(100,b?v/b*100:0)+'%';
 $('vstat').textContent=v<a?`🔴 警戒：低於 1 個月保底（${N(a)}），綠燈月優先補水位。`:v<b?'🟡 注意：1～3 個月之間，維持提撥，紅燈月才動用。':`🟢 安心：已超過 3 個月保底（${N(b)}），多出的可轉入年度儲蓄。`}
 function refresh(){S=compute();const w=S.w||[],wb=$('warn');wb.style.display=w.length?'block':'none';wb.textContent=w.join('　');
-const ok=S.ok,$$=(i,t)=>$(i).textContent=t;
-$$('m1',ok?'$'+N(S.incY):EMPTY);$$('m1s','保守基準 '+(ok?N(S.consY):EMPTY));
-$$('m2',ok?'$'+N(S.goalY):EMPTY);$$('m2s','每月約 '+(ok?N(S.goalM):EMPTY));
-$$('m3',ok?'$'+N(S.needY):EMPTY);$$('m3s','每月 '+(ok?N(S.fixed):EMPTY)+'（固定支出）');
+const ok=S.ok,$$=(i,t)=>$(i).innerHTML=t;
+$$('m1',ok?'$'+N(S.incY):PH('年收入'));$$('m1s','保守基準 '+(ok?N(S.consY):EMPTY));
+$$('m2',ok?'$'+N(S.goalY):PH('年度目標存款'));$$('m2s','每月約 '+(ok?N(S.goalM):EMPTY));
+$$('m3',ok?'$'+N(S.needY):PH('年度必須花費'));$$('m3s','每月 '+(ok?N(S.fixed):EMPTY)+'（固定支出）');
 const pf=ok?Math.round(S.pf*100):'○○';
 $$('fundtxt',`備用平準基金專門補「紅燈月」的洞。提撥規則：綠燈月的超額盈餘（上個月收入 − 固定支出 − 日常底線 − 基本存款），提撥 ${pf}%。`);
 $('fbody').innerHTML=[[`低於 1 個月（${ok?N(S.t1):EMPTY}）`,'🔴 警戒',`綠燈月提撥超額盈餘的 ${pf}%，水位偏低時優先補足`],['1～3 個月','🟡 注意','維持提撥，紅燈月才動用'],[`高於 3 個月（${ok?N(S.t1*3):EMPTY}）`,'🟢 安心','多出的部分轉入年度儲蓄'],[`每月固定支出 ${ok?N(S.fixed):EMPTY}`,'📘 必付','每月先扣，固定開銷要照付']].map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td></tr>`).join('');
 $$('safe',`🛡️ 安全守則：只在紅燈月動用；動用順序：先補日常（最低守 ${ok?N(S.daily):EMPTY}）→ 再停儲蓄 → 最後才動固定支出的彈性項目，之後要補回。`);
-if(cur!=null&&!ok)cur=null;if(!ok||cur==null)$$('screen','上月收入 '+EMPTY);
-show(sel);vrender();savein()}
-IDS.concat('last').forEach(i=>$(i).addEventListener('input',()=>{if(i==='last')savein();else refresh()}));
+cur=ok&&MON[sm]!=null?MON[sm]:null;$$('screen',PM()+' 月收入 '+(cur==null?EMPTY:'$ '+N(cur)));
+show(sel);vrender();drawMons();savein()}
+IDS.forEach(i=>$(i).addEventListener('input',()=>{if(i==='need')$('fixed').value=$('need').value;else if(i==='fixed')$('need').value=$('fixed').value;refresh()}));$('mons').addEventListener('click',e=>{const b=e.target.closest('button');if(b)pickMon(+b.dataset.m)});
 document.querySelectorAll('.switch button').forEach(b=>b.addEventListener('click',()=>show(b.dataset.k)));
 $('go').addEventListener('click',diagnose);$('last').addEventListener('keydown',e=>{if(e.key==='Enter')diagnose()});
 $('vsave').addEventListener('click',()=>{const v=parseFloat($('vin').value);if(!(v>=0)){$('vstat').textContent='請先輸入金額喔 🐷';return}vset(v);vrender()});
-$('clear').addEventListener('click',()=>{KEEP.concat('vin').forEach(i=>$(i).value='');cur=null;try{localStorage.removeItem('fin_in');localStorage.removeItem('fund_total')}catch(e){}$('result').textContent='先填好上方三個欄位，再輸入上個月收入，系統會自動判定燈號並更新所有金額。';refresh()});
-try{const o=JSON.parse(localStorage.getItem('fin_in')||'null');if(o)KEEP.forEach(i=>{if(o[i]!=null)$(i).value=o[i]});const f=vget();if(f)$('vin').value=f}catch(e){}
+$('clear').addEventListener('click',()=>{KEEP.concat('vin','last').forEach(i=>$(i).value='');cur=null;Object.keys(MON).forEach(k=>delete MON[k]);document.querySelectorAll('#todoList input').forEach(c=>c.checked=false);try{localStorage.removeItem('fin_in');localStorage.removeItem(MK);localStorage.removeItem('fin_todo');localStorage.removeItem('fund_total')}catch(e){}drawMons();$('result').textContent='先填好上方三個欄位，再輸入上個月收入，系統會自動判定燈號並更新所有金額。';refresh()});
+try{const o=JSON.parse(localStorage.getItem('fin_in')||'null');if(o)KEEP.forEach(i=>{if(o[i]!=null)$(i).value=o[i]});if($('need').value==='')$('need').value=$('fixed').value;else $('fixed').value=$('need').value;const f=vget();if(f)$('vin').value=f}catch(e){}
 const items=['發薪日先扣除固定支出','檢視上個月收入所對應的燈號','自動轉帳儲蓄目標','檢查平準基金水位','將金額分配至不同帳戶'];
 $('todoList').innerHTML=items.map((t,i)=>`<li><label><input type="checkbox" id="c${i}"><span class="cb"></span><span class="txt">${t}</span></label></li>`).join('');
+try{const td=JSON.parse(localStorage.getItem('fin_todo')||'[]');items.forEach((_,i)=>{$('c'+i).checked=!!td[i]})}catch(e){}
+$('todoList').addEventListener('change',()=>{try{localStorage.setItem('fin_todo',JSON.stringify(items.map((_,i)=>$('c'+i).checked)))}catch(e){}});
 const now=new Date(),end=new Date(now.getFullYear(),11,31,23,59,59);
 $('days').textContent=Math.max(0,Math.ceil((end-now)/864e5));
-refresh();
+if(MON[sm]!=null)pickMon(sm);else{drawMons();refresh()}
 </script>
 </body>
 </html>

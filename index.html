@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
-<head> 
-  <link rel="icon" type="image/png" href="./money.png">
+<head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>每月財務預算自動化規劃書</title>
@@ -152,7 +151,7 @@ footer{text-align:center;font-size:14px;margin-top:40px}
 <h2>🛡️ 防禦性資產說明</h2>
 <div class="box" style="padding:16px">
 <p style="margin-top:0" id="fundtxt"></p>
-<h3 style="margin:0 0 8px">🐷 我的平準基金小金庫</h3><div class="vault"><div class="screen" id="vamt"></div><label for="vin">目前平準基金累計剩餘總額</label><input id="vin" type="number" inputmode="numeric" min="0" placeholder="平準基金累計總額"><button class="go" id="vsave" type="button">記錄金額 🐷</button><div class="prog" role="img" aria-label="基金水位"><i id="vbar" style="width:0%"></i></div><p class="result" id="vstat" aria-live="polite">尚未記錄金額，輸入後會自動判斷水位。</p></div>
+<h3 style="margin:0 0 8px">🐷 我的平準基金小金庫</h3><div class="vault"><div class="screen" id="vamt"></div><label for="vin">當月平準</label><input id="vin" type="text" inputmode="text" autocomplete="off" placeholder="輸入金額，負數可扣除"><button class="go" id="vsave" type="button">記錄金額 🐷</button><div class="prog" role="img" aria-label="基金水位"><i id="vbar" style="width:0%"></i></div><p class="result" id="vstat" aria-live="polite">尚未記錄金額，輸入後會自動判斷水位。</p></div>
 <div class="tw"><table class="dash">
 <thead><tr><th>水位</th><th>狀態</th><th>防禦規則</th></tr></thead>
 <tbody id="fbody"></tbody></table></div>
@@ -220,20 +219,24 @@ function show(k,g){sel=k;renderPanel(k);const p=$('panel');p.classList.remove('b
 document.querySelectorAll('.switch button').forEach(b=>b.setAttribute('aria-selected',b.dataset.k===k));
 if(g){p.style.setProperty('--gc',cols[k]);p.classList.remove('glow');void p.offsetWidth;p.classList.add('glow')}}
 function drawMons(){$('mons').innerHTML=Array.from({length:12},(_,i)=>`<button type="button" data-m="${i+1}" aria-pressed="${i+1===sm}" class="${MON[i+1]!=null?'has':''}" style="--c:${MON[i+1]!=null&&S.ok?cols[lightOf(MON[i+1])]:'var(--paper)'}">${i+1}月</button>`).join('');$('lastlbl').textContent='請輸入 '+PM()+' 月的收入（作為 '+sm+' 月的分配依據）'}
-function pickMon(m){sm=m;const v=MON[m],res=$('result');$('last').value=v==null?'':v;drawMons();
+function pickMon(m){sm=m;vdirty=false;const v=MON[m],res=$('result');$('last').value=v==null?'':v;drawMons();
 if(!S.ok){res.textContent='請先填好上方三個必填欄位喔';refresh();return}
 if(v==null){res.textContent=m+' 月還沒有記錄，輸入 '+PM()+' 月收入後按下推算就會儲存。';refresh();return}
 const k=lightOf(v);res.textContent=`${m} 月分配（依 ${PM()} 月收入 ${N(v)}）→ ${{red:'🔴 紅燈',yellow:'🟡 黃燈',green:'🟢 綠燈'}[k]}`;sel=k;refresh()}
 function diagnose(){const res=$('result'),y=num('last');
 if(!S.ok){res.textContent='請先填好上方三個必填欄位喔';return}
 if(y==null||isNaN(y)||y<0){res.textContent='請先輸入該月收入金額喔 🐿️';return}
-cur=y;MON[sm]=y;savemon();const k=lightOf(y);$('screen').textContent=PM()+' 月收入 $ '+N(y);drawMons();
+cur=y;MON[sm]=y;savemon();vdirty=false;vrender();const k=lightOf(y);$('screen').textContent=PM()+' 月收入 $ '+N(y);drawMons();
 res.textContent=`${sm} 月分配（依 ${PM()} 月收入 ${N(y)}）→ ${{red:'🔴 紅燈',yellow:'🟡 黃燈',green:'🟢 綠燈'}[k]}，下方金額已自動更新！`;
 show(k,true);$('lights').scrollIntoView()}
 function savein(){try{const o={};KEEP.forEach(i=>o[i]=$(i).value);localStorage.setItem('fin_in',JSON.stringify(o))}catch(e){}}
 function vget(){try{return localStorage.getItem('fund_total')}catch(e){return null}}
 function vset(v){try{localStorage.setItem('fund_total',String(v))}catch(e){}}
-function vrender(){const s=vget(),v=s===null||s===''||isNaN(s)?null:+s;$('vamt').innerHTML=v==null?EMPTY:'$ '+N(v);
+let vdirty=false;
+function fcr(){try{return JSON.parse(localStorage.getItem('fund_cr')||'{}')}catch(e){return {}}}
+function fcrSet(o){try{localStorage.setItem('fund_cr',JSON.stringify(o))}catch(e){}}
+function monContrib(){if(!S.ok||MON[sm]==null)return 0;return lightOf(MON[sm])==='green'?Math.round(Math.max(0,MON[sm]-S.t2)*S.pf):0}
+function vrender(){const s=vget(),v=s===null||s===''||isNaN(s)?null:+s;$('vamt').innerHTML=v==null?EMPTY:'$ '+N(v);if(!vdirty){const cr=fcr()[sm];$('vin').value=cr?'':(monContrib()||'')}
 if(!S.ok){$('vbar').style.width='0%';$('vstat').textContent='先填入上方三個必填欄位，才能判斷水位';return}
 if(v==null){$('vbar').style.width='0%';$('vstat').textContent='尚未記錄金額，輸入後會自動判斷水位。';return}
 const a=S.t1,b=S.t1*3;$('vbar').style.width=Math.min(100,b?v/b*100:0)+'%';
@@ -252,9 +255,10 @@ show(sel);vrender();drawMons();renderSave();savein()}
 IDS.forEach(i=>$(i).addEventListener('input',()=>{if(i==='need')$('fixed').value=$('need').value;else if(i==='fixed')$('need').value=$('fixed').value;else if(i==='goal')$('sgoal').value=$('goal').value;refresh()}));$('mons').addEventListener('click',e=>{const b=e.target.closest('button');if(b)pickMon(+b.dataset.m)});
 document.querySelectorAll('.switch button').forEach(b=>b.addEventListener('click',()=>show(b.dataset.k)));
 $('go').addEventListener('click',diagnose);$('last').addEventListener('keydown',e=>{if(e.key==='Enter')diagnose()});
-$('vsave').addEventListener('click',()=>{const v=parseFloat($('vin').value);if(!(v>=0)){$('vstat').textContent='請先輸入金額喔 🐷';return}vset(v);vrender()});
-$('clear').addEventListener('click',()=>{KEEP.concat('vin','last','sgoal','ssaved').forEach(i=>$(i).value='');cur=null;Object.keys(MON).forEach(k=>delete MON[k]);document.querySelectorAll('#todoList input').forEach(c=>c.checked=false);try{localStorage.removeItem('fin_in');localStorage.removeItem(MK);localStorage.removeItem('fin_todo');localStorage.removeItem('fund_total');localStorage.removeItem('fin_save')}catch(e){}SV=null;drawMons();$('result').textContent='先填好上方三個欄位，再輸入上個月收入，系統會自動判定燈號並更新所有金額。';refresh()});
-try{const o=JSON.parse(localStorage.getItem('fin_in')||'null');if(o)KEEP.forEach(i=>{if(o[i]!=null)$(i).value=o[i]});if($('need').value==='')$('need').value=$('fixed').value;else $('fixed').value=$('need').value;const f=vget();if(f)$('vin').value=f}catch(e){}
+$('vin').addEventListener('input',()=>{vdirty=true});
+$('vsave').addEventListener('click',()=>{const d=parseFloat($('vin').value.replace(/,/g,''));if(isNaN(d)){$('vstat').textContent='請先輸入金額（正數加入、負數扣除）喔 🐷';return}const s=vget(),base=s===null||s===''||isNaN(s)?0:+s;vset(Math.max(0,base+d));const c=fcr();c[sm]=1;fcrSet(c);vdirty=false;vrender()});
+$('clear').addEventListener('click',()=>{KEEP.concat('vin','last','sgoal','ssaved').forEach(i=>$(i).value='');cur=null;vdirty=false;Object.keys(MON).forEach(k=>delete MON[k]);document.querySelectorAll('#todoList input').forEach(c=>c.checked=false);try{localStorage.removeItem('fin_in');localStorage.removeItem(MK);localStorage.removeItem('fin_todo');localStorage.removeItem('fund_total');localStorage.removeItem('fund_cr');localStorage.removeItem('fin_save')}catch(e){}SV=null;drawMons();$('result').textContent='先填好上方三個欄位，再輸入上個月收入，系統會自動判定燈號並更新所有金額。';refresh()});
+try{const o=JSON.parse(localStorage.getItem('fin_in')||'null');if(o)KEEP.forEach(i=>{if(o[i]!=null)$(i).value=o[i]});if($('need').value==='')$('need').value=$('fixed').value;else $('fixed').value=$('need').value;}catch(e){}
 const items=['發薪日先扣除固定支出','檢視上個月收入所對應的燈號','自動轉帳儲蓄目標','檢查平準基金水位','將金額分配至不同帳戶'];
 $('todoList').innerHTML=items.map((t,i)=>`<li><label><input type="checkbox" id="c${i}"><span class="cb"></span><span class="txt">${t}</span></label></li>`).join('');
 try{const td=JSON.parse(localStorage.getItem('fin_todo')||'[]');items.forEach((_,i)=>{$('c'+i).checked=!!td[i]})}catch(e){}

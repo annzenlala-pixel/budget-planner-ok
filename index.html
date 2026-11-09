@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-  <link rel="icon" type="image/png" href="./money.png">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>每月財務預算自動化規劃書</title>
@@ -82,6 +81,7 @@ footer{text-align:center;font-size:14px;margin-top:40px}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 .fld{display:grid;gap:4px}.fld label{font-size:15px}.hint{font-size:13px;margin:0;opacity:.75}.row3{display:grid;gap:8px;grid-template-columns:repeat(3,1fr)}.inbox{margin-top:18px;background:var(--yellow)}.inbox details{border:3px dashed var(--ink);border-radius:20px;padding:8px 12px;background:var(--paper)}.inbox summary{cursor:pointer;font-size:17px}.inbox details>div{display:grid;gap:10px;margin-top:10px}.warn{margin:0;background:var(--coral);border:3px solid var(--ink);border-radius:24px;padding:8px 14px;display:none}.ghost{background:var(--paper)}.ph{opacity:.3}input::placeholder{color:var(--ink);opacity:.3}.mons{display:grid;grid-template-columns:repeat(6,1fr);gap:6px}.mons button{font:inherit;border:3px solid var(--ink);border-radius:14px;background:var(--paper);padding:8px 0;cursor:pointer;position:relative;color:var(--ink)}.mons button[aria-pressed=true]{background:var(--yellow)}.mons button.has::after{content:"";position:absolute;top:3px;right:4px;width:10px;height:10px;border-radius:50%;background:var(--c,var(--paper));border:2px solid var(--ink)}
 .sv svg{width:120px;height:auto;justify-self:center}#sres{display:grid;gap:10px}#sres[hidden]{display:none}.sbar{height:26px;border:3px solid var(--ink);border-radius:24px 18px 22px 16px;overflow:hidden;background:var(--paper)}.sbar i{display:block;height:100%;width:0;background:var(--sky);border-right:3px solid var(--ink);transition:width .8s cubic-bezier(.3,1.6,.5,1)}.sbar i.zero{border-right:0}.sbar.done i{background:var(--green)}.s3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.s3c{padding:10px 4px;text-align:center;border-radius:20px}.s3c small{display:block;font-size:13px}.s3c strong{display:block;font-size:clamp(16px,4.8vw,24px);line-height:1.3;word-break:break-all}.bn.on{animation:bounce .6s cubic-bezier(.3,1.6,.5,1) both}.sv .result small{font-size:14px}
+.inwrap{position:relative}.nbtn{position:absolute;left:8px;top:50%;transform:translateY(-50%);width:36px;height:36px;border:3px solid var(--ink);border-radius:50%;background:var(--yellow);display:grid;place-items:center;cursor:pointer;padding:0;font:inherit}.nbtn.has::after{content:"";position:absolute;top:-4px;right:-4px;width:10px;height:10px;border-radius:50%;background:var(--coral);border:2px solid var(--ink)}.nbtn:focus-visible{outline:3px solid var(--coral);outline-offset:2px}.calc .inwrap input{padding-left:58px}.mask{position:fixed;inset:0;z-index:50;display:grid;place-items:center;padding:16px;background:rgba(62,58,57,.45)}.mask[hidden]{display:none}.mdl{width:min(100%,420px);background:var(--paper);border:3px solid var(--ink);border-radius:28px;padding:16px;display:grid;gap:12px;animation:bounce .5s cubic-bezier(.3,1.6,.5,1) both}.mdl h3{margin:0;font-size:18px}.mdl textarea{font:inherit;font-size:17px;width:100%;box-sizing:border-box;min-height:120px;resize:vertical;border:3px solid var(--ink);border-radius:20px;padding:10px 14px;background:var(--paper);color:var(--ink)}.mdl textarea:focus-visible{outline:3px solid var(--coral);outline-offset:2px}.macts{display:grid;grid-template-columns:1fr 1fr;gap:10px}.macts .go{min-height:44px}.macts .cx{background:var(--paper)}
 </style>
 </head>
 <body>
@@ -103,7 +103,7 @@ footer{text-align:center;font-size:14px;margin-top:40px}
 <h2 style="margin:0;justify-self:start;background:var(--paper)">💰 填入你的財務目標</h2>
 <div class="fld"><label for="goal">年度目標存款</label><input id="goal" type="number" inputmode="numeric" min="0" placeholder="年度目標存款"></div>
 <div class="fld"><label for="inc">年收入</label><input id="inc" type="number" inputmode="numeric" min="0" placeholder="年收入"></div>
-<div class="fld"><label for="need">年度必須花費</label><input id="need" type="number" inputmode="numeric" min="0" placeholder="年度必須花費"></div>
+<div class="fld"><label for="need">年度必須花費</label><div class="inwrap"><button type="button" id="nbtn" class="nbtn" aria-label="年度必須花費備註" aria-haspopup="dialog"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="#3E3A39" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="15" height="18" rx="3" fill="#FFFCF6"/><path d="M9 3v18M12.5 8h4M12.5 12h4"/><path d="M3 7h4M3 12h4M3 17h4"/></svg></button><input id="need" type="number" inputmode="numeric" min="0" placeholder="年度必須花費"></div></div>
 <details><summary>⚙️ 進階設定（選填）</summary><div>
 <div class="fld"><label for="cons">保守年收入</label><input id="cons" type="number" inputmode="numeric" min="0" placeholder="保守年收入"><p class="hint">未填則自動使用：年收入 × 65%</p></div>
 <div class="fld"><label for="daily">每月日常花費底線</label><input id="daily" type="number" inputmode="numeric" min="0" placeholder="每月日常花費底線"><p class="hint">未填則自動使用：6,000</p></div>
@@ -180,6 +180,7 @@ footer{text-align:center;font-size:14px;margin-top:40px}
 </section>
 <footer>用心照顧每一塊錢，慢慢來，比較快 ✿</footer>
 </main>
+<div class="mask" id="nmask" hidden><div class="mdl" role="dialog" aria-modal="true" aria-labelledby="ntitle"><h3 id="ntitle">📝 年度必須花費備註</h3><textarea id="ntext" maxlength="500" placeholder="例如：房租、保險、網路費…"></textarea><div class="macts"><button type="button" class="go cx" id="ncancel">取消</button><button type="button" class="go" id="nsave">儲存</button></div></div></div>
 <script>
 const PH=t=>`<span class="ph">${t}</span>`,EMPTY=PH('金額'),DEF_DAILY=6000,DEF_CONS=.65,DEF_SPLIT=[.5,.1,.4];
 const $=id=>document.getElementById(id);
@@ -258,7 +259,7 @@ document.querySelectorAll('.switch button').forEach(b=>b.addEventListener('click
 $('go').addEventListener('click',diagnose);$('last').addEventListener('keydown',e=>{if(e.key==='Enter')diagnose()});
 $('vin').addEventListener('input',()=>{vdirty=true});
 $('vsave').addEventListener('click',()=>{const d=parseFloat($('vin').value.replace(/,/g,''));if(isNaN(d)){$('vstat').textContent='請先輸入金額（正數加入、負數扣除）喔 🐷';return}const s=vget(),base=s===null||s===''||isNaN(s)?0:+s;vset(Math.max(0,base+d));const c=fcr();c[sm]=1;fcrSet(c);vdirty=false;vrender()});
-$('clear').addEventListener('click',()=>{KEEP.concat('vin','last','sgoal','ssaved').forEach(i=>$(i).value='');cur=null;vdirty=false;Object.keys(MON).forEach(k=>delete MON[k]);document.querySelectorAll('#todoList input').forEach(c=>c.checked=false);try{localStorage.removeItem('fin_in');localStorage.removeItem(MK);localStorage.removeItem('fin_todo');localStorage.removeItem('fund_total');localStorage.removeItem('fund_cr');localStorage.removeItem('fin_save')}catch(e){}SV=null;drawMons();$('result').textContent='先填好上方三個欄位，再輸入上個月收入，系統會自動判定燈號並更新所有金額。';refresh()});
+$('clear').addEventListener('click',()=>{KEEP.concat('vin','last','sgoal','ssaved').forEach(i=>$(i).value='');cur=null;vdirty=false;Object.keys(MON).forEach(k=>delete MON[k]);document.querySelectorAll('#todoList input').forEach(c=>c.checked=false);try{localStorage.removeItem('fin_in');localStorage.removeItem(MK);localStorage.removeItem('fin_todo');localStorage.removeItem('fund_total');localStorage.removeItem('fund_cr');localStorage.removeItem('need_note');localStorage.removeItem('fin_save')}catch(e){}SV=null;nupdate();drawMons();$('result').textContent='先填好上方三個欄位，再輸入上個月收入，系統會自動判定燈號並更新所有金額。';refresh()});
 try{const o=JSON.parse(localStorage.getItem('fin_in')||'null');if(o)KEEP.forEach(i=>{if(o[i]!=null)$(i).value=o[i]});if($('need').value==='')$('need').value=$('fixed').value;else $('fixed').value=$('need').value;}catch(e){}
 const items=['發薪日先扣除固定支出','檢視上個月收入所對應的燈號','自動轉帳儲蓄目標','檢查平準基金水位','將金額分配至不同帳戶'];
 $('todoList').innerHTML=items.map((t,i)=>`<li><label><input type="checkbox" id="c${i}"><span class="cb"></span><span class="txt">${t}</span></label></li>`).join('');
@@ -266,6 +267,19 @@ try{const td=JSON.parse(localStorage.getItem('fin_todo')||'[]');items.forEach((_
 $('todoList').addEventListener('change',()=>{try{localStorage.setItem('fin_todo',JSON.stringify(items.map((_,i)=>$('c'+i).checked)))}catch(e){}});
 const now=new Date(),end=new Date(now.getFullYear(),11,31,23,59,59);
 $('days').textContent=Math.max(0,Math.ceil((end-now)/864e5));
+let noteOpen=false;
+function nget(){try{return localStorage.getItem('need_note')||''}catch(e){return ''}}
+function nput(v){try{localStorage.setItem('need_note',v)}catch(e){}}
+function nupdate(){const h=!!nget();$('nbtn').classList.toggle('has',h);$('nbtn').setAttribute('aria-label',h?'年度必須花費備註（已有內容）':'年度必須花費備註')}
+function openNote(){noteOpen=true;$('ntext').value=nget();$('nmask').hidden=false;document.body.style.overflow='hidden';$('ntext').focus()}
+function closeNote(){noteOpen=false;$('nmask').hidden=true;document.body.style.overflow='';$('nbtn').focus()}
+$('nbtn').addEventListener('click',openNote);
+$('ncancel').addEventListener('click',closeNote);
+$('nsave').addEventListener('click',()=>{nput($('ntext').value.trim());nupdate();closeNote()});
+$('nmask').addEventListener('click',e=>{if(e.target===$('nmask'))closeNote()});
+document.addEventListener('keydown',e=>{if(!noteOpen)return;if(e.key==='Escape'){closeNote();return}
+if(e.key==='Tab'){const f=[$('ntext'),$('ncancel'),$('nsave')],i=f.indexOf(document.activeElement);e.preventDefault();f[(i+(e.shiftKey?-1:1)+f.length)%f.length].focus()}});
+nupdate();
 const SK='fin_save';let SV=null;
 function sget(){try{return JSON.parse(localStorage.getItem(SK)||'null')}catch(e){return null}}
 function sput(o){try{localStorage.setItem(SK,JSON.stringify(o))}catch(e){}}

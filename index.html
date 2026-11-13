@@ -16,7 +16,7 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .box{border:3px solid var(--ink);border-radius:24px;background:var(--paper)}
 nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:var(--paper);border-bottom:3px solid var(--ink);padding:10px 12px;display:flex;gap:8px;overflow-x:auto;justify-content:flex-start}
 nav a{flex:0 0 auto;text-decoration:none;color:var(--ink);border:3px solid var(--ink);border-radius:24px;padding:4px 14px;background:var(--yellow);font-size:15px;white-space:nowrap}
-nav a:nth-child(2){background:var(--coral)}nav a:nth-child(3){background:var(--sky)}nav a:nth-child(4){background:var(--green)}nav a:nth-child(5){background:var(--coral)}
+nav a:nth-child(2){background:var(--coral)}nav a:nth-child(3){background:var(--sky)}nav a:nth-child(4){background:var(--green)}nav a:nth-child(5){background:var(--coral)}nav a:nth-child(6){background:var(--yellow)}
 nav a:active{transform:scale(.94)}
 main{max-width:980px;margin:0 auto;padding:16px 14px 48px}
 section{margin-top:36px}
@@ -83,10 +83,26 @@ footer{text-align:center;font-size:14px;margin-top:40px}
 .fld{display:grid;gap:4px}.fld label{font-size:15px}.hint{font-size:13px;margin:0;opacity:.75}.row3{display:grid;gap:8px;grid-template-columns:repeat(3,1fr)}.inbox{margin-top:18px;background:var(--yellow)}.inbox details{border:3px dashed var(--ink);border-radius:20px;padding:8px 12px;background:var(--paper)}.inbox summary{cursor:pointer;font-size:17px}.inbox details>div{display:grid;gap:10px;margin-top:10px}.warn{margin:0;background:var(--coral);border:3px solid var(--ink);border-radius:24px;padding:8px 14px;display:none}.ghost{background:var(--paper)}.ph{opacity:.3}input::placeholder{color:var(--ink);opacity:.3}.mons{display:grid;grid-template-columns:repeat(6,1fr);gap:6px}.mons button{font:inherit;border:3px solid var(--ink);border-radius:14px;background:var(--paper);padding:8px 0;cursor:pointer;position:relative;color:var(--ink)}.mons button[aria-pressed=true]{background:var(--yellow)}.mons button.has::after{content:"";position:absolute;top:3px;right:4px;width:10px;height:10px;border-radius:50%;background:var(--c,var(--paper));border:2px solid var(--ink)}
 .sv svg{width:120px;height:auto;justify-self:center}#sres{display:grid;gap:10px}#sres[hidden]{display:none}.sbar{height:26px;border:3px solid var(--ink);border-radius:24px 18px 22px 16px;overflow:hidden;background:var(--paper)}.sbar i{display:block;height:100%;width:0;background:var(--sky);border-right:3px solid var(--ink);transition:width .8s cubic-bezier(.3,1.6,.5,1)}.sbar i.zero{border-right:0}.sbar.done i{background:var(--green)}.s3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.s3c{padding:10px 4px;text-align:center;border-radius:20px}.s3c small{display:block;font-size:13px}.s3c strong{display:block;font-size:clamp(16px,4.8vw,24px);line-height:1.3;word-break:break-all}.bn.on{animation:bounce .6s cubic-bezier(.3,1.6,.5,1) both}.sv .result small{font-size:14px}
 .inwrap{position:relative}.nbtn{position:absolute;left:8px;top:50%;transform:translateY(-50%);width:36px;height:36px;border:3px solid var(--ink);border-radius:50%;background:var(--yellow);display:grid;place-items:center;cursor:pointer;padding:0;font:inherit}.nbtn.has::after{content:"";position:absolute;top:-4px;right:-4px;width:10px;height:10px;border-radius:50%;background:var(--coral);border:2px solid var(--ink)}.nbtn:focus-visible{outline:3px solid var(--coral);outline-offset:2px}.calc .inwrap input{padding-left:58px}.mask{position:fixed;inset:0;z-index:50;display:grid;place-items:center;padding:16px;background:rgba(62,58,57,.45)}.mask[hidden]{display:none}.mdl{width:min(100%,420px);background:var(--paper);border:3px solid var(--ink);border-radius:28px;padding:16px;display:grid;gap:12px;animation:bounce .5s cubic-bezier(.3,1.6,.5,1) both}.mdl h3{margin:0;font-size:18px}.mdl textarea{font:inherit;font-size:17px;width:100%;box-sizing:border-box;min-height:120px;resize:vertical;border:3px solid var(--ink);border-radius:20px;padding:10px 14px;background:var(--paper);color:var(--ink)}.mdl textarea:focus-visible{outline:3px solid var(--coral);outline-offset:2px}.macts{display:grid;grid-template-columns:1fr 1fr;gap:10px}.macts .go{min-height:44px}.macts .cx{background:var(--paper)}
+#authbar{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;padding:8px 14px;font-size:14px}#authbar button{min-height:44px;padding:8px 14px;font-size:15px}#authbar button:disabled{opacity:.5;cursor:not-allowed}#authbar button:focus-visible{outline:3px solid var(--coral);outline-offset:2px}
+.wf{display:grid;gap:10px}.wf input{font:inherit;font-size:17px;width:100%;box-sizing:border-box;min-height:44px;border:3px solid var(--ink);border-radius:24px;padding:8px 14px;background:var(--paper);color:var(--ink)}.wf input:focus-visible,.wc input:focus-visible,.wc button:focus-visible{outline:3px solid var(--coral);outline-offset:2px}.wcards{display:grid;gap:12px}.wc{padding:14px;display:grid;gap:8px}.wc h3{margin:0;font-size:18px}.wc .wline{font-size:15px}.wc .wrow{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center}.wc input{font:inherit;font-size:16px;min-height:44px;border:3px solid var(--ink);border-radius:24px;padding:6px 12px;background:var(--paper);color:var(--ink);width:100%;box-sizing:border-box}.wc button{font:inherit;font-size:15px;min-height:44px;padding:6px 14px;border:3px solid var(--ink);border-radius:24px;background:var(--yellow);color:var(--ink);box-shadow:0 4px 0 var(--ink);cursor:pointer}.wc button.del{background:var(--paper);box-shadow:none}.wc .done{background:var(--green)}.wc .warn{color:var(--ink);background:var(--coral);border-radius:14px;padding:4px 10px;display:inline-block}
 </style>
 </head>
 <body>
-<nav aria-label="主選單"><a href="#home">🏠 首頁</a><a href="#calc">🧮 預算計算機</a><a href="#lights">🚦 情境分配表</a><a href="#todo">📒 理財待辦</a><a href="#savings">🎯 儲蓄進度</a></nav>
+<script>
+/* 本機＋雲端儲存層：所有資料先寫入記憶體快取並同步到 localStorage，登入後再同步到 Firestore */
+const LS=(()=>{const c={},KEY=/^(fin_|fund_|need_note)/;let hook=null,timer=null;
+try{for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(KEY.test(k))c[k]=localStorage.getItem(k)}}catch(e){}
+const mirror=(k,v)=>{try{v==null?localStorage.removeItem(k):localStorage.setItem(k,v)}catch(e){}};
+const flush=()=>{clearTimeout(timer);timer=setTimeout(()=>{if(hook)hook({...c})},600)};
+return{getItem:k=>k in c?c[k]:null,
+setItem:(k,v)=>{c[k]=String(v);mirror(k,c[k]);flush()},
+removeItem:k=>{delete c[k];mirror(k,null);flush()},
+_all:()=>({...c}),
+_replace:o=>{Object.keys(c).forEach(k=>{if(!(k in o)){delete c[k];mirror(k,null)}});Object.keys(o).forEach(k=>{c[k]=String(o[k]);mirror(k,c[k])})},
+_hook:f=>{hook=f}}})();
+</script>
+<nav aria-label="主選單"><a href="#home">🏠 首頁</a><a href="#calc">🧮 預算計算機</a><a href="#lights">🚦 情境分配表</a><a href="#todo">📒 理財待辦</a><a href="#savings">🎯 儲蓄進度</a><a href="#wish">⭐ 願望</a></nav>
+<div id="authbar"><span id="authst" aria-live="polite">載入中…</span><button id="authbtn" type="button" class="go ghost">用 Google 登入</button></div>
 <main>
 <section id="home" style="margin-top:0">
 <div class="box hero">
@@ -179,6 +195,20 @@ footer{text-align:center;font-size:14px;margin-top:40px}
 <p class="result" id="snote"></p>
 </div>
 </section>
+<section id="wish">
+<h2>⭐ 願望清單</h2>
+<div class="box calc wf" role="group" aria-labelledby="wformT">
+<h3 id="wformT" style="margin:0;font-size:18px">新增一個願望</h3>
+<div class="fld"><label for="wname">願望名稱</label><input id="wname" type="text" maxlength="30" placeholder="例如：換手機"></div>
+<div class="fld"><label for="wgoal">目標金額</label><input id="wgoal" type="number" inputmode="numeric" min="1" placeholder="目標金額"></div>
+<div class="fld"><label for="wdate">希望完成日期（選填）</label><input id="wdate" type="date"></div>
+<div class="fld"><label for="wsaved">已存金額（選填）</label><input id="wsaved" type="number" inputmode="numeric" min="0" placeholder="0"></div>
+<button class="go" id="wadd" type="button">新增願望 ⭐</button>
+<p class="result" id="wmsg" aria-live="polite"></p>
+</div>
+<div class="wcards" id="wlist" aria-live="polite"></div>
+<p class="result">每個願望的「每月要存」只是依目標日期推算的參考，不會改動燈號或平準分配。</p>
+</section>
 <footer>用心照顧每一塊錢，慢慢來，比較快 ✿</footer>
 </main>
 <div class="mask" id="nmask" hidden><div class="mdl" role="dialog" aria-modal="true" aria-labelledby="ntitle"><h3 id="ntitle">📝 年度必須花費備註</h3><textarea id="ntext" maxlength="500" placeholder="例如：房租、保險、網路費…"></textarea><div class="macts"><button type="button" class="go cx" id="ncancel">取消</button><button type="button" class="go" id="nsave">儲存</button></div></div></div>
@@ -191,8 +221,8 @@ const N=n=>Math.round(n).toLocaleString('en-US'),F=v=>v==null?EMPTY:N(v);
 const TG=(c,t)=>`<span class="tag ${c}">${t}</span>`;
 let cur=null,S={ok:false},sel='red';
 const _n=new Date(),MON={},MK='fin_mon_'+_n.getFullYear();let sm=_n.getMonth()+1,PM=()=>sm===1?12:sm-1;
-try{Object.assign(MON,JSON.parse(localStorage.getItem(MK)||'{}'))}catch(e){}
-function savemon(){try{localStorage.setItem(MK,JSON.stringify(MON))}catch(e){}}
+try{Object.assign(MON,JSON.parse(LS.getItem(MK)||'{}'))}catch(e){}
+function savemon(){try{LS.setItem(MK,JSON.stringify(MON))}catch(e){}}
 function num(id){const s=$(id).value.trim();if(s==='')return null;const v=parseFloat(s);return isFinite(v)?v:NaN}
 function compute(){const v={},w=[];let neg=false;
 IDS.forEach(i=>{v[i]=num(i);if(v[i]!=null&&(isNaN(v[i])||v[i]<0)){neg=true;v[i]=null}});
@@ -232,12 +262,12 @@ if(y==null||isNaN(y)||y<0){res.textContent='請先輸入該月收入金額喔 �
 cur=y;MON[sm]=y;savemon();vdirty=false;vrender();const k=lightOf(y);$('screen').textContent=PM()+' 月收入 $ '+N(y);drawMons();
 res.textContent=`${sm} 月分配（依 ${PM()} 月收入 ${N(y)}）→ ${{red:'🔴 紅燈',yellow:'🟡 黃燈',green:'🟢 綠燈'}[k]}，下方金額已自動更新！`;
 show(k,true);$('lights').scrollIntoView()}
-function savein(){try{const o={};KEEP.forEach(i=>o[i]=$(i).value);localStorage.setItem('fin_in',JSON.stringify(o))}catch(e){}}
-function vget(){try{return localStorage.getItem('fund_total')}catch(e){return null}}
-function vset(v){try{localStorage.setItem('fund_total',String(v))}catch(e){}}
+function savein(){try{const o={};KEEP.forEach(i=>o[i]=$(i).value);LS.setItem('fin_in',JSON.stringify(o))}catch(e){}}
+function vget(){try{return LS.getItem('fund_total')}catch(e){return null}}
+function vset(v){try{LS.setItem('fund_total',String(v))}catch(e){}}
 let vdirty=false;
-function fcr(){try{return JSON.parse(localStorage.getItem('fund_cr')||'{}')}catch(e){return {}}}
-function fcrSet(o){try{localStorage.setItem('fund_cr',JSON.stringify(o))}catch(e){}}
+function fcr(){try{return JSON.parse(LS.getItem('fund_cr')||'{}')}catch(e){return {}}}
+function fcrSet(o){try{LS.setItem('fund_cr',JSON.stringify(o))}catch(e){}}
 function monContrib(){if(!S.ok||MON[sm]==null)return 0;return lightOf(MON[sm])==='green'?Math.round(Math.max(0,MON[sm]-S.t2)*S.pf):0}
 function vrender(){const s=vget(),v=s===null||s===''||isNaN(s)?null:+s;$('vamt').innerHTML=v==null?EMPTY:'$ '+N(v);if(!vdirty){const cr=fcr()[sm];$('vin').value=cr?'':(monContrib()||'')}
 if(!S.ok){$('vbar').style.width='0%';$('vstat').textContent='先填入上方三個必填欄位，才能判斷水位';return}
@@ -260,17 +290,17 @@ document.querySelectorAll('.switch button').forEach(b=>b.addEventListener('click
 $('go').addEventListener('click',diagnose);$('last').addEventListener('keydown',e=>{if(e.key==='Enter')diagnose()});
 $('vin').addEventListener('input',()=>{vdirty=true});
 $('vsave').addEventListener('click',()=>{const d=parseFloat($('vin').value.replace(/,/g,''));if(isNaN(d)){$('vstat').textContent='請先輸入金額（正數加入、負數扣除）喔 🐷';return}const s=vget(),base=s===null||s===''||isNaN(s)?0:+s;vset(Math.max(0,base+d));const c=fcr();c[sm]=1;fcrSet(c);vdirty=false;vrender()});
-$('clear').addEventListener('click',()=>{KEEP.concat('vin','last','sgoal','ssaved').forEach(i=>$(i).value='');cur=null;vdirty=false;Object.keys(MON).forEach(k=>delete MON[k]);document.querySelectorAll('#todoList input').forEach(c=>c.checked=false);try{localStorage.removeItem('fin_in');localStorage.removeItem(MK);localStorage.removeItem('fin_todo');localStorage.removeItem('fund_total');localStorage.removeItem('fund_cr');localStorage.removeItem('need_note');localStorage.removeItem('fin_save')}catch(e){}SV=null;nupdate();drawMons();$('result').textContent='先填好上方三個欄位，再輸入上個月收入，系統會自動判定燈號並更新所有金額。';refresh()});
-try{const o=JSON.parse(localStorage.getItem('fin_in')||'null');if(o)KEEP.forEach(i=>{if(o[i]!=null)$(i).value=o[i]});if($('need').value==='')$('need').value=$('fixed').value;else $('fixed').value=$('need').value;}catch(e){}
+$('clear').addEventListener('click',()=>{if(!confirm('確定清空全部資料？若已登入，雲端資料也會一併清除。'))return;KEEP.concat('vin','last','sgoal','ssaved').forEach(i=>$(i).value='');cur=null;vdirty=false;Object.keys(MON).forEach(k=>delete MON[k]);document.querySelectorAll('#todoList input').forEach(c=>c.checked=false);try{LS.removeItem('fin_in');LS.removeItem(MK);LS.removeItem('fin_todo');LS.removeItem('fund_total');LS.removeItem('fund_cr');LS.removeItem('need_note');LS.removeItem('fin_save');LS.removeItem('fin_wish')}catch(e){}WISH=[];renderWish();SV=null;nupdate();drawMons();$('result').textContent='先填好上方三個欄位，再輸入上個月收入，系統會自動判定燈號並更新所有金額。';refresh()});
+try{const o=JSON.parse(LS.getItem('fin_in')||'null');if(o)KEEP.forEach(i=>{if(o[i]!=null)$(i).value=o[i]});if($('need').value==='')$('need').value=$('fixed').value;else $('fixed').value=$('need').value;}catch(e){}
 const items=['發薪日先扣除固定支出','檢視上個月收入所對應的燈號','自動轉帳儲蓄目標','檢查平準基金水位','將金額分配至不同帳戶'];
 $('todoList').innerHTML=items.map((t,i)=>`<li><label><input type="checkbox" id="c${i}"><span class="cb"></span><span class="txt">${t}</span></label></li>`).join('');
-try{const td=JSON.parse(localStorage.getItem('fin_todo')||'[]');items.forEach((_,i)=>{$('c'+i).checked=!!td[i]})}catch(e){}
-$('todoList').addEventListener('change',()=>{try{localStorage.setItem('fin_todo',JSON.stringify(items.map((_,i)=>$('c'+i).checked)))}catch(e){}});
+try{const td=JSON.parse(LS.getItem('fin_todo')||'[]');items.forEach((_,i)=>{$('c'+i).checked=!!td[i]})}catch(e){}
+$('todoList').addEventListener('change',()=>{try{LS.setItem('fin_todo',JSON.stringify(items.map((_,i)=>$('c'+i).checked)))}catch(e){}});
 const now=new Date(),end=new Date(now.getFullYear(),11,31,23,59,59);
 $('days').textContent=Math.max(0,Math.ceil((end-now)/864e5));
 let noteOpen=false;
-function nget(){try{return localStorage.getItem('need_note')||''}catch(e){return ''}}
-function nput(v){try{localStorage.setItem('need_note',v)}catch(e){}}
+function nget(){try{return LS.getItem('need_note')||''}catch(e){return ''}}
+function nput(v){try{LS.setItem('need_note',v)}catch(e){}}
 function nupdate(){const h=!!nget();$('nbtn').classList.toggle('has',h);$('nbtn').setAttribute('aria-label',h?'年度必須花費備註（已有內容）':'年度必須花費備註')}
 function openNote(){noteOpen=true;$('ntext').value=nget();$('nmask').hidden=false;document.body.style.overflow='hidden';$('ntext').focus()}
 function closeNote(){noteOpen=false;$('nmask').hidden=true;document.body.style.overflow='';$('nbtn').focus()}
@@ -282,8 +312,8 @@ document.addEventListener('keydown',e=>{if(!noteOpen)return;if(e.key==='Escape')
 if(e.key==='Tab'){const f=[$('ntext'),$('ncancel'),$('nsave')],i=f.indexOf(document.activeElement);e.preventDefault();f[(i+(e.shiftKey?-1:1)+f.length)%f.length].focus()}});
 nupdate();
 const SK='fin_save';let SV=null;
-function sget(){try{return JSON.parse(localStorage.getItem(SK)||'null')}catch(e){return null}}
-function sput(o){try{localStorage.setItem(SK,JSON.stringify(o))}catch(e){}}
+function sget(){try{return JSON.parse(LS.getItem(SK)||'null')}catch(e){return null}}
+function sput(o){try{LS.setItem(SK,JSON.stringify(o))}catch(e){}}
 function renderSave(anim){
 const b=S.ok?N(S.base):EMPTY,pp=S.ok?Math.round(S.ps*100):'○○';
 $('snote').innerHTML=`<b>和燈號分配的關係：</b>每月儲蓄是「付完固定與日常之後，剩下的才存」，不是由年度目標倒推。黃燈存款上限 <span class="num">${b}</span>；綠燈存款 ＝ <span class="num">${b}</span> ＋ 超額盈餘 × ${pp}%。年度進度區塊只用來對照進度，不會改動燈號分配的金額。`;
@@ -305,7 +335,152 @@ SV={g,s};sput({goal:g,saved:s});renderSave(true)});
 $('ssaved').addEventListener('keydown',e=>{if(e.key==='Enter')$('supd').click()});
 try{const o=sget();if($('goal').value===''&&o&&o.goal>0)$('goal').value=o.goal;$('sgoal').value=$('goal').value;
 if(o&&o.saved>=0&&o.goal>0){$('ssaved').value=o.saved;SV={g:+$('goal').value>0?+$('goal').value:o.goal,s:o.saved}}}catch(e){}
+let WISH=[];
+const WK='fin_wish';
+try{const w=JSON.parse(LS.getItem(WK)||'[]');if(Array.isArray(w))WISH=w}catch(e){}
+function wsave(){LS.setItem(WK,JSON.stringify(WISH))}
+function wmsg(t){$('wmsg').textContent=t}
+function wel(tag,cls,text){const e=document.createElement(tag);if(cls)e.className=cls;if(text!=null)e.textContent=text;return e}
+function wmonths(d){if(!d)return null;const ms=new Date(d+'T23:59:59')-new Date();if(ms<0)return 0;return Math.max(1,Math.ceil(ms/864e5/30.44))}
+function renderWish(){
+ const box=$('wlist');box.textContent='';
+ if(!WISH.length){box.appendChild(wel('p','result','還沒有願望，在上方新增一個吧 ⭐'));return}
+ WISH.forEach((w,i)=>{
+  const card=wel('div','box wc');
+  const pct=Math.min(100,Math.round(w.saved/w.goal*100));
+  const done=w.saved>=w.goal;
+  card.appendChild(wel('h3','',w.name));
+  card.appendChild(wel('div','wline','已存 '+N(Math.min(w.saved,w.goal))+' ／ 目標 '+N(w.goal)+'（'+pct+'%）'));
+  const bar=wel('div','sbar');bar.setAttribute('role','progressbar');bar.setAttribute('aria-label',w.name+' 完成度');bar.setAttribute('aria-valuemin','0');bar.setAttribute('aria-valuemax','100');bar.setAttribute('aria-valuenow',String(pct));
+  const fill=wel('i','');fill.style.width=pct+'%';if(pct===0)fill.classList.add('zero');bar.appendChild(fill);
+  if(done)bar.classList.add('done');
+  card.appendChild(bar);
+  if(done){card.appendChild(wel('span','done wline','🎉 願望達成！'))}
+  else if(w.date){
+    const mo=wmonths(w.date);
+    if(mo===0)card.appendChild(wel('span','warn wline','已超過希望日期，請更新日期或金額'));
+    else card.appendChild(wel('div','wline','距離 '+w.date+' 還有約 '+mo+' 個月，每月要存 '+N(Math.max(0,w.goal-w.saved)/mo)+' 元'));
+  }else card.appendChild(wel('div','wline','還差 '+N(Math.max(0,w.goal-w.saved))+' 元（未設定日期）'));
+  const row=wel('div','wrow');
+  const inp=wel('input','');inp.type='number';inp.inputMode='numeric';inp.min='0';inp.placeholder='更新已存金額';inp.setAttribute('aria-label',w.name+' 已存金額');inp.dataset.i=i;
+  const up=wel('button','','更新');up.type='button';up.dataset.act='up';up.dataset.i=i;
+  row.appendChild(inp);row.appendChild(up);
+  card.appendChild(row);
+  const del=wel('button','del','刪除此願望');del.type='button';del.dataset.act='del';del.dataset.i=i;
+  card.appendChild(del);
+  box.appendChild(card);
+ });
+}
+$('wadd').addEventListener('click',()=>{
+ const name=$('wname').value.trim(),goal=num('wgoal'),sv=num('wsaved'),date=$('wdate').value;
+ if(!name){wmsg('請輸入願望名稱喔 ⭐');return}
+ if(goal==null||isNaN(goal)||goal<=0){wmsg('請輸入大於 0 的目標金額喔 ⭐');return}
+ const saved=sv==null||isNaN(sv)||sv<0?0:sv;
+ WISH.push({name,goal,saved,date:date||null});wsave();
+ $('wname').value='';$('wgoal').value='';$('wdate').value='';$('wsaved').value='';
+ wmsg('已新增「'+name+'」');renderWish();
+});
+$('wlist').addEventListener('click',e=>{
+ const b=e.target.closest('button');if(!b)return;
+ const i=+b.dataset.i,w=WISH[i];if(!w)return;
+ if(b.dataset.act==='up'){
+  const v=parseFloat(b.parentElement.querySelector('input').value);
+  if(isNaN(v)||v<0){wmsg('請輸入不小於 0 的已存金額 ⭐');return}
+  w.saved=v;wsave();wmsg('已更新「'+w.name+'」');renderWish();
+ }else if(b.dataset.act==='del'){
+  if(b.dataset.armed!=='1'){
+    b.dataset.armed='1';b.textContent='再按一次確認刪除';
+    wmsg('再按一次「'+w.name+'」的刪除按鈕即可刪除');
+    setTimeout(()=>{if(b.isConnected&&b.dataset.armed==='1'){b.dataset.armed='';b.textContent='刪除此願望'}},3000);
+    return;
+  }
+  const name=w.name;WISH.splice(i,1);wsave();wmsg('已刪除「'+name+'」');renderWish();
+ }
+});
+renderWish();
 if(MON[sm]!=null)pickMon(sm);else{drawMons();refresh()}
+</script>
+<script type="module">
+import {initializeApp} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import {getAuth,GoogleAuthProvider,signInWithRedirect,getRedirectResult,onAuthStateChanged,signOut} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import {getFirestore,doc,getDoc,setDoc,serverTimestamp} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+/* ↓↓ 請替換為自己的 Firebase 設定（Firebase 控制台 → 專案設定 → 網頁應用程式） ↓↓ */
+const FB_CONFIG={
+  apiKey:"REPLACE_ME",
+  authDomain:"REPLACE_ME.firebaseapp.com",
+  projectId:"REPLACE_ME",
+  storageBucket:"REPLACE_ME.appspot.com",
+  messagingSenderId:"REPLACE_ME",
+  appId:"REPLACE_ME"
+};
+/* ↑↑ 替換到此為止 ↑↑ */
+
+const stEl=document.getElementById('authst'),btn=document.getElementById('authbtn');
+const setSt=t=>{stEl.textContent=t};
+const sortedJSON=o=>JSON.stringify(Object.keys(o).sort().map(k=>[k,o[k]]));
+const configured=!FB_CONFIG.apiKey.startsWith('REPLACE');
+let uid=null,ref=null,who='';
+
+if(!configured){
+  setSt('尚未設定雲端，資料僅存本機');
+  btn.disabled=true;
+}else{
+  const app=initializeApp(FB_CONFIG);
+  const auth=getAuth(app);
+  const db=getFirestore(app);
+
+  LS._hook(async data=>{
+    if(!uid)return;
+    setSt('同步中…');
+    try{
+      await setDoc(ref,{data,updatedAt:serverTimestamp()});
+      setSt('已同步 ✓ '+who);
+    }catch(e){
+      setSt('同步失敗，資料已存本機');
+    }
+  });
+
+  btn.addEventListener('click',()=>{
+    if(uid){signOut(auth).then(()=>location.reload()).catch(()=>setSt('登出失敗，請再試一次'))}
+    else{signInWithRedirect(auth,new GoogleAuthProvider()).catch(()=>setSt('登入失敗，請再試一次'))}
+  });
+
+  getRedirectResult(auth).catch(()=>{});
+
+  onAuthStateChanged(auth,async u=>{
+    if(!u){
+      uid=null;ref=null;who='';
+      btn.textContent='用 Google 登入';
+      setSt('未登入，資料僅存本機');
+      return;
+    }
+    uid=u.uid;
+    who=u.displayName||u.email||'';
+    ref=doc(db,'users',uid,'data','main');
+    btn.textContent='登出';
+    setSt('同步中…');
+    try{
+      const snap=await getDoc(ref);
+      const local=LS._all();
+      if(snap.exists()&&snap.data().data){
+        const cloud=snap.data().data;
+        if(sortedJSON(cloud)!==sortedJSON(local)){
+          /* 以雲端為準：寫入本機後重新載入頁面，讓所有畫面依雲端資料重算 */
+          LS._replace(cloud);
+          location.reload();
+          return;
+        }
+      }else if(Object.keys(local).length){
+        /* 首次登入遷移：雲端沒有資料，把本機舊資料上傳一次 */
+        await setDoc(ref,{data:local,updatedAt:serverTimestamp()});
+      }
+      setSt('已同步 ✓ '+who);
+    }catch(e){
+      setSt('讀取雲端失敗，暫用本機資料');
+    }
+  });
+}
 </script>
 </body>
 </html>

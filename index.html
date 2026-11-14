@@ -91,16 +91,16 @@ footer{text-align:center;font-size:14px;margin-top:40px}
 <body>
 <script>
 /* 本機＋雲端儲存層：所有資料先寫入記憶體快取並同步到 localStorage，登入後再同步到 Firestore */
-const LS=(()=>{const c={},KEY=/^(fin_|fund_|need_note)/;let hook=null,timer=null;
+const LS=(()=>{const c={},KEY=/^(fin_|fund_|need_note)/;let hook=null,timer=null,dirty=false;
 try{for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(KEY.test(k))c[k]=localStorage.getItem(k)}}catch(e){}
 const mirror=(k,v)=>{try{v==null?localStorage.removeItem(k):localStorage.setItem(k,v)}catch(e){}};
-const flush=()=>{clearTimeout(timer);timer=setTimeout(()=>{if(hook)hook({...c})},600)};
+const flush=()=>{dirty=true;clearTimeout(timer);timer=setTimeout(()=>{dirty=false;if(hook)hook({...c})},600)};
 return{getItem:k=>k in c?c[k]:null,
 setItem:(k,v)=>{c[k]=String(v);mirror(k,c[k]);flush()},
 removeItem:k=>{delete c[k];mirror(k,null);flush()},
 _all:()=>({...c}),
 _replace:o=>{Object.keys(c).forEach(k=>{if(!(k in o)){delete c[k];mirror(k,null)}});Object.keys(o).forEach(k=>{c[k]=String(o[k]);mirror(k,c[k])})},
-_hook:f=>{hook=f}}})();
+_hook:f=>{hook=f},_dirty:()=>dirty}})();
 </script>
 <nav aria-label="主選單"><a href="#home">🏠 首頁</a><a href="#calc">🧮 預算計算機</a><a href="#lights">🚦 情境分配表</a><a href="#todo">📒 理財待辦</a><a href="#savings">🎯 儲蓄進度</a><a href="#wish">⭐ 願望</a></nav>
 <div id="authbar"><span id="authst" aria-live="polite">載入中…</span><button id="authbtn" type="button" class="go ghost">用 Google 登入</button></div>
@@ -441,7 +441,7 @@ if(MON[sm]!=null)pickMon(sm);else{drawMons();refresh()}
 <script type="module">
 import {initializeApp} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import {getAuth,GoogleAuthProvider,signInWithPopup,signInWithRedirect,getRedirectResult,onAuthStateChanged,signOut} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import {getFirestore,doc,getDoc,setDoc,serverTimestamp} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import {getFirestore,doc,getDoc,setDoc,serverTimestamp,onSnapshot} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 /* ↓↓ 請替換為自己的 Firebase 設定（Firebase 控制台 → 專案設定 → 網頁應用程式） ↓↓ */
 const FB_CONFIG={
@@ -469,16 +469,35 @@ if(!configured){
   const auth=getAuth(app);
   const db=getFirestore(app);
 
+    let writing=0,unsub=null;
   LS._hook(async data=>{
     if(!uid)return;
     setSt('同步中…');
+    writing++;
     try{
       await setDoc(ref,{data,updatedAt:serverTimestamp()});
       setSt('已同步 ✓ '+who);
     }catch(e){
       setSt('同步失敗，資料已存本機');
-    }
+    }finally{writing--}
   });
+
+  /* 即時監聽：雲端有變動（例如手機修改）時，電腦自動更新 */
+  const startListen=()=>{
+    if(unsub)unsub();
+    unsub=onSnapshot(ref,snap=>{
+      if(snap.metadata.hasPendingWrites||!snap.exists())return;
+      const cloud=snap.data().data||{};
+      if(sortedJSON(cloud)===sortedJSON(LS._all()))return;
+      /* 本機有尚未上傳的修改時不套用，避免舊資料覆蓋新修改 */
+      if(LS._dirty()||writing>0)return;
+      const a=document.activeElement;
+      if(a&&/^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName)){setSt('雲端有新資料，請離開輸入框後重新整理');return}
+      LS._replace(cloud);
+      setSt('雲端有新資料，正在更新…');
+      setTimeout(()=>location.reload(),400);
+    },()=>setSt('即時同步中斷，請重新整理'));
+  };
 
     btn.addEventListener('click',async()=>{
     if(uid){signOut(auth).then(()=>location.reload()).catch(e=>setSt('登出失敗：'+(e.code||'未知錯誤')));return}
@@ -494,7 +513,8 @@ if(!configured){
 
   onAuthStateChanged(auth,async u=>{
     if(!u){
-      uid=null;ref=null;who='';
+            uid=null;ref=null;who='';
+      if(unsub){unsub();unsub=null}
       btn.textContent='用 Google 登入';
       setSt('未登入，資料僅存本機');
       return;
@@ -520,6 +540,7 @@ if(!configured){
         await setDoc(ref,{data:local,updatedAt:serverTimestamp()});
       }
       setSt('已同步 ✓ '+who);
+      startListen();
     }catch(e){
       setSt('讀取雲端失敗，暫用本機資料');
     }

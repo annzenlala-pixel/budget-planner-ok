@@ -440,7 +440,7 @@ if(MON[sm]!=null)pickMon(sm);else{drawMons();refresh()}
 </script>
 <script type="module">
 import {initializeApp} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import {getAuth,GoogleAuthProvider,signInWithRedirect,getRedirectResult,onAuthStateChanged,signOut} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import {getAuth,GoogleAuthProvider,signInWithPopup,signInWithRedirect,getRedirectResult,onAuthStateChanged,signOut} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import {getFirestore,doc,getDoc,setDoc,serverTimestamp} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 /* ↓↓ 請替換為自己的 Firebase 設定（Firebase 控制台 → 專案設定 → 網頁應用程式） ↓↓ */

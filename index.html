@@ -480,9 +480,14 @@ if(!configured){
     }
   });
 
-  btn.addEventListener('click',()=>{
-    if(uid){signOut(auth).then(()=>location.reload()).catch(()=>setSt('登出失敗，請再試一次'))}
-    else{signInWithRedirect(auth,new GoogleAuthProvider()).catch(()=>setSt('登入失敗，請再試一次'))}
+    btn.addEventListener('click',async()=>{
+    if(uid){signOut(auth).then(()=>location.reload()).catch(e=>setSt('登出失敗：'+(e.code||'未知錯誤')));return}
+    setSt('登入中…');
+    try{
+      await signInWithPopup(auth,new GoogleAuthProvider());
+    }catch(e){
+      setSt('登入失敗：'+(e.code||e.message||'未知錯誤'));
+    }
   });
 
   getRedirectResult(auth).catch(()=>{});

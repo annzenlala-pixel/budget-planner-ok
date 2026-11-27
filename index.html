@@ -104,7 +104,7 @@ _replace:o=>{Object.keys(c).forEach(k=>{if(!(k in o)){delete c[k];mirror(k,null)
 _hook:f=>{hook=f},_dirty:()=>dirty}})();
 </script>
 <nav aria-label="主選單"><a href="#home">🏠 首頁</a><a href="#calc">🧮 預算計算機</a><a href="#lights">🚦 情境分配表</a><a href="#todo">📒 理財待辦</a><a href="#savings">🎯 儲蓄進度</a><a href="#wish">⭐ 願望</a></nav>
-<div id="authbar"><span id="authst" aria-live="polite">載入中…</span><button id="authbtn" type="button" class="go ghost">用 Google 登入</button></div>
+<div id="authbar"><span id="authst" aria-live="polite">載入中…</span><button id="authbtn" type="button" class="go ghost">用 Google 登入</button><button id="restorebtn" type="button" class="go ghost" hidden>從雲端還原</button><span id="cloudtime" class="result"></span></div>
 <main>
 <section id="home" style="margin-top:0">
 <div class="box hero">
@@ -171,7 +171,7 @@ _hook:f=>{hook=f},_dirty:()=>dirty}})();
 <h2>🛡️ 防禦性資產說明</h2>
 <div class="box" style="padding:16px">
 <p style="margin-top:0" id="fundtxt"></p>
-<h3 style="margin:0 0 8px">🐷 我的平準基金小金庫</h3><div class="vault"><div class="screen" id="vamt"></div><label for="vin">當月平準</label><input id="vin" type="text" inputmode="text" autocomplete="off" placeholder="輸入金額，負數可扣除"><input id="vreason" type="text" maxlength="40" autocomplete="off" placeholder="原因（選填），例如：年終獎金、買鞋" aria-label="記錄原因"><button class="go" id="vsave" type="button">記錄金額 🐷</button><div class="prog" role="img" aria-label="基金水位"><i id="vbar" style="width:0%"></i></div><p class="result" id="vstat" aria-live="polite">尚未記錄金額，輸入後會自動判斷水位。</p><p class="result" id="vstat" aria-live="polite">尚未記錄金額，輸入後會自動判斷水位。</p></div>
+<h3 style="margin:0 0 8px">🐷 我的平準基金小金庫</h3><div class="vault"><div class="screen" id="vamt"></div><label for="vin">當月平準</label><input id="vin" type="text" inputmode="text" autocomplete="off" placeholder="輸入金額，負數可扣除"><input id="vreason" type="text" maxlength="40" autocomplete="off" placeholder="原因（選填），例如：年終獎金、買鞋" aria-label="記錄原因"><button class="go" id="vsave" type="button">記錄金額 🐷</button><div class="prog" role="img" aria-label="基金水位"><i id="vbar" style="width:0%"></i></div><p class="result" id="vstat" aria-live="polite">尚未記錄金額，輸入後會自動判斷水位。</p><p class="result" id="vstat" aria-live="polite">尚未記錄金額，輸入後會自動判斷水位。</p><details class="flog" id="flogbox"><summary>📜 歷史紀錄（共 0 筆）</summary><div id="flist"></div><button class="go" id="fmore" type="button" hidden>查看更多</button></details></div>
 <div class="tw"><table class="dash">
 <thead><tr><th>水位</th><th>狀態</th><th>防禦規則</th></tr></thead>
 <tbody id="fbody"></tbody></table></div>
@@ -508,6 +508,7 @@ const FB_CONFIG={
 /* ↑↑ 替換到此為止 ↑↑ */
 
 const stEl=document.getElementById('authst'),btn=document.getElementById('authbtn');
+const rbtn=document.getElementById('restorebtn'),ctime=document.getElementById('cloudtime');
 const setSt=t=>{stEl.textContent=t};
 const sortedJSON=o=>JSON.stringify(Object.keys(o).sort().map(k=>[k,o[k]]));
 const configured=!FB_CONFIG.apiKey.startsWith('REPLACE');
@@ -551,23 +552,42 @@ if(!configured){
     },()=>setSt('即時同步中斷，請重新整理'));
   };
 
-    btn.addEventListener('click',async()=>{
+    let lastErr='';
+  const errText=e=>'登入失敗：'+(e&&e.code?e.code:(e&&e.message)||'未知錯誤');
+
+  btn.addEventListener('click',async()=>{
     if(uid){signOut(auth).then(()=>location.reload()).catch(e=>setSt('登出失敗：'+(e.code||'未知錯誤')));return}
     setSt('登入中…');
     try{
       await signInWithPopup(auth,new GoogleAuthProvider());
     }catch(e){
-      setSt('登入失敗：'+(e.code||e.message||'未知錯誤'));
+      if(e.code==='auth/popup-blocked'||e.code==='auth/operation-not-supported-in-this-environment'){
+        try{await signInWithRedirect(auth,new GoogleAuthProvider())}
+        catch(e2){lastErr=errText(e2);setSt(lastErr)}
+      }else{lastErr=errText(e);setSt(lastErr)}
     }
   });
 
-  getRedirectResult(auth).catch(()=>{});
+  getRedirectResult(auth).catch(e=>{lastErr=errText(e);setSt(lastErr)});
+
+  rbtn.addEventListener('click',async()=>{
+    if(!uid||!ref)return;
+    setSt('從雲端還原中…');
+    try{
+      const snap=await getDoc(ref);
+      if(!snap.exists()||!snap.data().data){setSt('雲端沒有可還原的資料');return}
+      /* 以雲端為準：強制套用雲端資料並重新載入 */
+      LS._replace(snap.data().data);
+      location.reload();
+    }catch(e){setSt('還原失敗，請再試一次')}
+  });
 
   onAuthStateChanged(auth,async u=>{
     if(!u){
             uid=null;ref=null;who='';
       if(unsub){unsub();unsub=null}
       btn.textContent='用 Google 登入';
+      rbtn.hidden=true;ctime.textContent='';
       setSt('未登入，資料僅存本機');
       return;
     }
@@ -575,9 +595,12 @@ if(!configured){
     who=u.displayName||u.email||'';
     ref=doc(db,'users',uid,'data','main');
     btn.textContent='登出';
+    rbtn.hidden=false;
     setSt('同步中…');
     try{
       const snap=await getDoc(ref);
+      const ts=snap.exists()&&snap.data().updatedAt;
+      if(ts&&ts.toDate)ctime.textContent='雲端更新：'+ts.toDate().toLocaleString('zh-TW');
       const local=LS._all();
       if(snap.exists()&&snap.data().data){
         const cloud=snap.data().data;

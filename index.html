@@ -86,6 +86,7 @@ footer{text-align:center;font-size:14px;margin-top:40px}
 #authbar{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;padding:8px 14px;font-size:14px}#authbar button{min-height:44px;padding:8px 14px;font-size:15px}#authbar button:disabled{opacity:.5;cursor:not-allowed}#authbar button:focus-visible{outline:3px solid var(--coral);outline-offset:2px}
 .wf{display:grid;gap:10px}.wf input{font:inherit;font-size:17px;width:100%;box-sizing:border-box;min-height:44px;border:3px solid var(--ink);border-radius:24px;padding:8px 14px;background:var(--paper);color:var(--ink)}.wf input:focus-visible,.wc input:focus-visible,.wc button:focus-visible{outline:3px solid var(--coral);outline-offset:2px}.wcards{display:grid;gap:12px}.wc{padding:14px;display:grid;gap:8px}.wc h3{margin:0;font-size:18px}.wc .wline{font-size:15px}.wc .wrow{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center}.wc input{font:inherit;font-size:16px;min-height:44px;border:3px solid var(--ink);border-radius:24px;padding:6px 12px;background:var(--paper);color:var(--ink);width:100%;box-sizing:border-box}.wc button{font:inherit;font-size:15px;min-height:44px;padding:6px 14px;border:3px solid var(--ink);border-radius:24px;background:var(--yellow);color:var(--ink);box-shadow:0 4px 0 var(--ink);cursor:pointer}.wc button.del{background:var(--paper);box-shadow:none}.wc .done{background:var(--green)}.wc .warn{color:var(--ink);background:var(--coral);border-radius:14px;padding:4px 10px;display:inline-block}
 .whead{display:flex;justify-content:space-between;align-items:center;gap:10px}.whead .wtitle{margin:0;font-size:18px;min-width:0;overflow-wrap:anywhere}.wc .wedit{flex:0 0 auto;min-height:44px;padding:6px 14px;border:3px solid var(--ink);border-radius:999px;background:var(--paper);color:var(--ink);font:inherit;font-size:15px;box-shadow:0 4px 0 var(--ink);cursor:pointer;white-space:nowrap}.wc .wedit:focus-visible,.wc .wtitle:focus-visible{outline:3px solid var(--coral);outline-offset:2px}
+.flog{margin-top:10px}.flog summary{min-height:44px;display:flex;align-items:center;cursor:pointer;font-weight:bold;font-size:16px}.flrow{display:grid;grid-template-columns:auto 1fr auto auto;gap:8px;font-size:14px;align-items:center;padding:8px 0;border-bottom:2px dashed var(--ink)}.flnote{font-size:13px;padding:2px 0 6px;opacity:.8}#fmore{margin-top:8px;min-height:44px;width:100%}
 </style>
 </head>
 <body>
@@ -170,7 +171,7 @@ _hook:f=>{hook=f},_dirty:()=>dirty}})();
 <h2>🛡️ 防禦性資產說明</h2>
 <div class="box" style="padding:16px">
 <p style="margin-top:0" id="fundtxt"></p>
-<h3 style="margin:0 0 8px">🐷 我的平準基金小金庫</h3><div class="vault"><div class="screen" id="vamt"></div><label for="vin">當月平準</label><input id="vin" type="text" inputmode="text" autocomplete="off" placeholder="輸入金額，負數可扣除"><button class="go" id="vsave" type="button">記錄金額 🐷</button><div class="prog" role="img" aria-label="基金水位"><i id="vbar" style="width:0%"></i></div><p class="result" id="vstat" aria-live="polite">尚未記錄金額，輸入後會自動判斷水位。</p></div>
+<h3 style="margin:0 0 8px">🐷 我的平準基金小金庫</h3><div class="vault"><div class="screen" id="vamt"></div><label for="vin">當月平準</label><input id="vin" type="text" inputmode="text" autocomplete="off" placeholder="輸入金額，負數可扣除"><input id="vreason" type="text" maxlength="40" autocomplete="off" placeholder="原因（選填），例如：年終獎金、買鞋" aria-label="記錄原因"><button class="go" id="vsave" type="button">記錄金額 🐷</button><div class="prog" role="img" aria-label="基金水位"><i id="vbar" style="width:0%"></i></div><p class="result" id="vstat" aria-live="polite">尚未記錄金額，輸入後會自動判斷水位。</p><p class="result" id="vstat" aria-live="polite">尚未記錄金額，輸入後會自動判斷水位。</p></div>
 <div class="tw"><table class="dash">
 <thead><tr><th>水位</th><th>狀態</th><th>防禦規則</th></tr></thead>
 <tbody id="fbody"></tbody></table></div>
@@ -266,11 +267,33 @@ show(k,true);$('lights').scrollIntoView()}
 function savein(){try{const o={};KEEP.forEach(i=>o[i]=$(i).value);LS.setItem('fin_in',JSON.stringify(o))}catch(e){}}
 function vget(){try{return LS.getItem('fund_total')}catch(e){return null}}
 function vset(v){try{LS.setItem('fund_total',String(v))}catch(e){}}
+  const FK='fund_log';let flogShow=5;
+function flogGet(){try{const a=JSON.parse(LS.getItem(FK)||'[]');return Array.isArray(a)?a:[]}catch(e){return []}}
+function flogPut(a){try{LS.setItem(FK,JSON.stringify(a.slice(0,500)))}catch(e){}}
+function flogAdd(type,amt,bal,note){const a=flogGet();a.unshift({t:Date.now(),type:type,amt:amt,bal:bal,note:note||''});flogPut(a)}
+function flogRender(){
+ const a=flogGet(),box=$('flist');
+ $('flogbox').querySelector('summary').textContent='📜 歷史紀錄（共 '+a.length+' 筆）';
+ box.textContent='';
+ if(!a.length){box.appendChild(wel('p','result','還沒有紀錄'));$('fmore').hidden=true;return}
+ a.slice(0,flogShow).forEach(r=>{
+  const d=new Date(r.t);
+  const ds=d.getFullYear()+'/'+String(d.getMonth()+1).padStart(2,'0')+'/'+String(d.getDate()).padStart(2,'0');
+  const row=wel('div','flrow');
+  row.appendChild(wel('span','',ds));
+  row.appendChild(wel('span','',r.type));
+  row.appendChild(wel('span','',(r.amt>=0?'+':'−')+N(Math.abs(r.amt))));
+  row.appendChild(wel('span','','餘額 '+N(r.bal)));
+  box.appendChild(row);
+  if(r.note)box.appendChild(wel('div','flnote',r.note));
+ });
+ $('fmore').hidden=a.length<=flogShow;
+}
 let vdirty=false;
 function fcr(){try{return JSON.parse(LS.getItem('fund_cr')||'{}')}catch(e){return {}}}
 function fcrSet(o){try{LS.setItem('fund_cr',JSON.stringify(o))}catch(e){}}
 function monContrib(){if(!S.ok||MON[sm]==null)return 0;return lightOf(MON[sm])==='green'?Math.round(Math.max(0,MON[sm]-S.t2)*S.pf):0}
-function vrender(){const s=vget(),v=s===null||s===''||isNaN(s)?null:+s;$('vamt').innerHTML=v==null?EMPTY:'$ '+N(v);if(!vdirty){const cr=fcr()[sm];$('vin').value=cr?'':(monContrib()||'')}
+function vrender(){const s=vget(),v=s===null||s===''||isNaN(s)?null:+s;$('vamt').innerHTML=v==null?EMPTY:'$ '+N(v);if(!vdirty){const cr=fcr()[sm];$('vin').value=cr?'':(monContrib()||'')}flogRender();
 if(!S.ok){$('vbar').style.width='0%';$('vstat').textContent='先填入上方三個必填欄位，才能判斷水位';return}
 if(v==null){$('vbar').style.width='0%';$('vstat').textContent='尚未記錄金額，輸入後會自動判斷水位。';return}
 const a=S.t1,b=S.t1*3;$('vbar').style.width=Math.min(100,b?v/b*100:0)+'%';
@@ -290,8 +313,28 @@ IDS.forEach(i=>$(i).addEventListener('input',()=>{if(i==='need')$('fixed').value
 document.querySelectorAll('.switch button').forEach(b=>b.addEventListener('click',()=>show(b.dataset.k)));
 $('go').addEventListener('click',diagnose);$('last').addEventListener('keydown',e=>{if(e.key==='Enter')diagnose()});
 $('vin').addEventListener('input',()=>{vdirty=true});
-$('vsave').addEventListener('click',()=>{const d=parseFloat($('vin').value.replace(/,/g,''));if(isNaN(d)){$('vstat').textContent='請先輸入金額（正數加入、負數扣除）喔 🐷';return}const s=vget(),base=s===null||s===''||isNaN(s)?0:+s;vset(Math.max(0,base+d));const c=fcr();c[sm]=1;fcrSet(c);vdirty=false;vrender()});
-$('clear').addEventListener('click',()=>{if(!confirm('確定清空全部資料？若已登入，雲端資料也會一併清除。'))return;KEEP.concat('vin','last','sgoal','ssaved').forEach(i=>$(i).value='');cur=null;vdirty=false;Object.keys(MON).forEach(k=>delete MON[k]);document.querySelectorAll('#todoList input').forEach(c=>c.checked=false);try{LS.removeItem('fin_in');LS.removeItem(MK);LS.removeItem('fin_todo');LS.removeItem('fund_total');LS.removeItem('fund_cr');LS.removeItem('need_note');LS.removeItem('fin_save');LS.removeItem('fin_wish')}catch(e){}WISH=[];renderWish();SV=null;nupdate();drawMons();$('result').textContent='先填好上方三個欄位，再輸入上個月收入，系統會自動判定燈號並更新所有金額。';refresh()});
+$('vsave').addEventListener('click',()=>{
+ const d=parseFloat($('vin').value.replace(/,/g,''));
+ if(isNaN(d)){$('vstat').textContent='請先輸入金額（正數加入、負數扣除）喔 🐷';return}
+ const s=vget(),base=s===null||s===''||isNaN(s)?0:+s;
+ const nv=Math.max(0,base+d);const applied=nv-base;
+ vset(nv);
+ const c=fcr();const mc=monContrib();
+ const credit=!c[sm]&&mc>0&&d===mc;
+ if(d!==0){
+  const type=credit?'當月平準入帳':(d>0?'手動加入':'手動扣除');
+  const reason=($('vreason').value||'').trim();
+  const parts=[];
+  if(credit)parts.push(sm+' 月分配');
+  if(reason)parts.push(reason);
+  if(!credit&&base+d<0)parts.push('餘額不足，已扣至零');
+  flogAdd(type,applied,nv,parts.join('・'));
+  $('vreason').value='';
+ }
+ c[sm]=1;fcrSet(c);vdirty=false;vrender();
+});
+$('fmore').addEventListener('click',()=>{flogShow+=10;flogRender()});
+$('clear').addEventListener('click',()=>{if(!confirm('確定清空全部資料？若已登入，雲端資料也會一併清除。'))return;KEEP.concat('vin','last','sgoal','ssaved').forEach(i=>$(i).value='');cur=null;vdirty=false;$('vreason').value='';Object.keys(MON).forEach(k=>delete MON[k]);document.querySelectorAll('#todoList input').forEach(c=>c.checked=false);try{LS.removeItem('fin_in');LS.removeItem(MK);LS.removeItem('fin_todo');LS.removeItem('fund_total');LS.removeItem('fund_cr');LS.removeItem('fund_log');LS.removeItem('need_note');LS.removeItem('fin_save');LS.removeItem('fin_wish')}catch(e){}WISH=[];renderWish();SV=null;nupdate();drawMons();$('result').textContent='先填好上方三個欄位，再輸入上個月收入，系統會自動判定燈號並更新所有金額。';refresh()});
 try{const o=JSON.parse(LS.getItem('fin_in')||'null');if(o)KEEP.forEach(i=>{if(o[i]!=null)$(i).value=o[i]});if($('need').value==='')$('need').value=$('fixed').value;else $('fixed').value=$('need').value;}catch(e){}
 const items=['發薪日先扣除固定支出','檢視上個月收入所對應的燈號','自動轉帳儲蓄目標','檢查平準基金水位','將金額分配至不同帳戶'];
 $('todoList').innerHTML=items.map((t,i)=>`<li><label><input type="checkbox" id="c${i}"><span class="cb"></span><span class="txt">${t}</span></label></li>`).join('');
